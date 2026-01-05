@@ -1,0 +1,134 @@
+--- coreutils-6.7/src/df.c.orig	2006-10-22 17:54:15.000000000 +0100
++++ coreutils-6.7/src/df.c	2007-01-19 09:43:57.000000000 +0000
+@@ -111,6 +111,10 @@
+ /* If true, print file system type as well.  */
+ static bool print_type;
+ 
++/* Print in wide mode, usefull for long device entries eg devfs, udev and lvm */
++static int wide;
++static int devwidth;
++
+ /* For long options that have no equivalent short option, use a
+    non-character as a pseudo short option, starting with CHAR_MAX + 1.  */
+ enum
+@@ -137,6 +141,7 @@
+   {"no-sync", no_argument, NULL, NO_SYNC_OPTION},
+   {"type", required_argument, NULL, 't'},
+   {"exclude-type", required_argument, NULL, 'x'},
++  {"wide", no_argument, NULL, 'w'},
+   {GETOPT_HELP_OPTION_DECL},
+   {GETOPT_VERSION_OPTION_DECL},
+   {NULL, 0, NULL, 0}
+@@ -146,11 +151,16 @@
+ print_header (void)
+ {
+   char buf[MAX (LONGEST_HUMAN_READABLE + 1, INT_BUFSIZE_BOUND (uintmax_t))];
++  int i;
+ 
+-  if (print_type)
++  if (print_type) {
+     fputs (_("Filesystem    Type"), stdout);
+-  else
++  } else {
+     fputs (_("Filesystem        "), stdout);
++    if (wide && !posix_format)
++      for(i = devwidth; i > 20; i--)
++        fputs (_(" "), stdout);
++  }
+ 
+   if (inode_format)
+     printf (_("    Inodes   IUsed   IFree IUse%%"));
+@@ -274,6 +284,7 @@
+   struct fs_usage fsu;
+   char buf[3][LONGEST_HUMAN_READABLE + 2];
+   int width;
++  int i;
+   int col1_adjustment = 0;
+   int use_width;
+   uintmax_t input_units;
+@@ -338,8 +349,13 @@
+     }
+   else
+     {
+-      if (strlen (disk) > 20 && !posix_format)
++      if (strlen (disk) > 20 && !posix_format && !wide)
+ 	printf ("%s\n%20s", disk, "");
++      else if (wide && !posix_format) {
++	printf ("%s", disk);
++        for(i = devwidth; i > strlen(disk); i--)
++          printf (" ");
++      }
+       else
+ 	printf ("%-20s", disk);
+     }
+@@ -554,6 +570,7 @@
+ 
+   if (best_match)
+     {
++      devwidth = strlen(best_match->me_devname);
+       show_dev (best_match->me_devname, best_match->me_mountdir, NULL,
+ 		best_match->me_type, best_match->me_dummy,
+ 		best_match->me_remote);
+@@ -658,9 +675,11 @@
+ 	  }
+       }
+ 
+-  if (best_match)
++  if (best_match) {
++    devwidth = strlen(best_match->me_devname);
+     show_dev (best_match->me_devname, best_match->me_mountdir, point,
+ 	      best_match->me_type, best_match->me_dummy, best_match->me_remote);
++  }
+   else
+     {
+       /* We couldn't find the mount entry corresponding to POINT.  Go ahead and
+@@ -697,6 +716,13 @@
+ show_all_entries (void)
+ {
+   struct mount_entry *me;
++  int max = 0;
++
++  for (me = mount_list; me; me = me->me_next) {
++    if(strlen(me->me_devname) > max)
++      max = strlen(me->me_devname);
++  }
++  devwidth = max;
+ 
+   for (me = mount_list; me; me = me->me_next)
+     show_dev (me->me_devname, me->me_mountdir, NULL, me->me_type,
+@@ -765,6 +791,7 @@
+   -T, --print-type      print file system type\n\
+   -x, --exclude-type=TYPE   limit listing to file systems not of type TYPE\n\
+   -v                    (ignored)\n\
++  -w, --wide            print in wide format, for long device entries\n\
+ "), stdout);
+       fputs (HELP_OPTION_DESCRIPTION, stdout);
+       fputs (VERSION_OPTION_DESCRIPTION, stdout);
+@@ -796,6 +823,8 @@
+   inode_format = false;
+   show_all_fs = false;
+   show_listed_fs = false;
++  wide = false;
++  devwidth = 0;
+ 
+   human_output_opts = human_options (getenv ("DF_BLOCK_SIZE"), false,
+ 				     &output_block_size);
+@@ -805,7 +834,7 @@
+   posix_format = false;
+   exit_status = EXIT_SUCCESS;
+ 
+-  while ((c = getopt_long (argc, argv, "aB:iF:hHklmPTt:vx:", long_options, NULL))
++  while ((c = getopt_long (argc, argv, "aB:iF:hHklmPTt:vx:w", long_options, NULL))
+ 	 != -1)
+     {
+       switch (c)
+@@ -867,6 +896,9 @@
+ 	case 'x':
+ 	  add_excluded_fs_type (optarg);
+ 	  break;
++	case 'w':
++	  wide = true;
++	  break;
+ 
+ 	case_GETOPT_HELP_CHAR;
+ 	case_GETOPT_VERSION_CHAR (PROGRAM_NAME, AUTHORS);

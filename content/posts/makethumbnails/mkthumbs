@@ -1,0 +1,10 @@
+#!/bin/bash -eu
+rm -r -f thumb
+mkdir thumb
+
+for f in *; do
+	file --brief --dereference --mime "$f" 2>/dev/null | \
+                grep -q '^image\/' || continue
+        echo "$f"
+	convert -size 300x200 "$f" -resize 300x200 "thumb/$f"
+done

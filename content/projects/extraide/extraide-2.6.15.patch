@@ -1,0 +1,82 @@
+diff -ur linux-source-2.6.15.orig/drivers/ide/ide.c linux-source-2.6.15/drivers/ide/ide.c
+--- linux-source-2.6.15.orig/drivers/ide/ide.c	2006-02-21 17:40:50.000000000 +0000
++++ linux-source-2.6.15/drivers/ide/ide.c	2006-03-13 22:35:27.000000000 +0000
+@@ -168,7 +168,9 @@
+ 					IDE2_MAJOR, IDE3_MAJOR,
+ 					IDE4_MAJOR, IDE5_MAJOR,
+ 					IDE6_MAJOR, IDE7_MAJOR,
+-					IDE8_MAJOR, IDE9_MAJOR };
++					IDE8_MAJOR, IDE9_MAJOR,
++					IDE10_MAJOR, IDE11_MAJOR,
++					IDE12_MAJOR, IDE13_MAJOR };
+ 
+ static int idebus_parameter;	/* holds the "idebus=" parameter */
+ static int system_bus_speed;	/* holds what we think is VESA/PCI bus speed */
+@@ -213,7 +215,7 @@
+ 	hwif->name[0]	= 'i';
+ 	hwif->name[1]	= 'd';
+ 	hwif->name[2]	= 'e';
+-	hwif->name[3]	= '0' + index;
++	hwif->name[3]	= (index < 10) ? ('0' + index) : ('a' + index - 10);
+ 
+ 	hwif->bus_state	= BUSSTATE_ON;
+ 
+@@ -239,7 +241,10 @@
+ 		drive->special.b.set_geometry	= 1;
+ 		drive->name[0]			= 'h';
+ 		drive->name[1]			= 'd';
+-		drive->name[2]			= 'a' + (index * MAX_DRIVES) + unit;
++		drive->name[2]			= 
++			(((index * MAX_DRIVES) + unit) < 26) ?
++				('a' + (index * MAX_DRIVES) + unit) : 
++				('A' + (index * MAX_DRIVES) + unit - 26);
+ 		drive->max_failures		= IDE_DEFAULT_MAX_FAILURES;
+ 		drive->using_dma		= 0;
+ 		drive->is_flash			= 0;
+diff -ur linux-source-2.6.15.orig/drivers/ide/ide-probe.c linux-source-2.6.15/drivers/ide/ide-probe.c
+--- linux-source-2.6.15.orig/drivers/ide/ide-probe.c	2006-01-03 03:21:10.000000000 +0000
++++ linux-source-2.6.15/drivers/ide/ide-probe.c	2006-03-13 22:38:22.000000000 +0000
+@@ -1277,6 +1277,11 @@
+ 	disk->major = hwif->major;
+ 	disk->first_minor = unit << PARTN_BITS;
+ 	sprintf(disk->disk_name, "hd%c", 'a' + hwif->index * MAX_DRIVES + unit);
++	sprintf(disk->disk_name, "hd%c", 
++                        (hwif->index * MAX_DRIVES + unit) < 26 ?
++                                ('a' + hwif->index * MAX_DRIVES + unit) :
++                                ('A' + hwif->index * MAX_DRIVES + unit - 26)
++                );
+ 	disk->queue = drive->queue;
+ }
+ 
+diff -ur linux-source-2.6.15.orig/include/asm-i386/ide.h linux-source-2.6.15/include/asm-i386/ide.h
+--- linux-source-2.6.15.orig/include/asm-i386/ide.h	2006-01-03 03:21:10.000000000 +0000
++++ linux-source-2.6.15/include/asm-i386/ide.h	2006-03-13 22:35:27.000000000 +0000
+@@ -17,7 +17,7 @@
+ 
+ #ifndef MAX_HWIFS
+ # ifdef CONFIG_BLK_DEV_IDEPCI
+-#define MAX_HWIFS	10
++#define MAX_HWIFS	14
+ # else
+ #define MAX_HWIFS	6
+ # endif
+diff -ur linux-source-2.6.15.orig/include/linux/major.h linux-source-2.6.15/include/linux/major.h
+--- linux-source-2.6.15.orig/include/linux/major.h	2006-01-03 03:21:10.000000000 +0000
++++ linux-source-2.6.15/include/linux/major.h	2006-03-13 22:35:27.000000000 +0000
+@@ -107,10 +107,16 @@
+ #define IDE8_MAJOR		90
+ #define IDE9_MAJOR		91
+ 
++#define IDE10_MAJOR		92
++#define IDE11_MAJOR		93
++
+ #define DASD_MAJOR		94
+ 
+ #define MDISK_MAJOR		95
+ 
++#define IDE12_MAJOR		96
++#define IDE13_MAJOR		97
++
+ #define UBD_MAJOR		98
+ 
+ #define JSFD_MAJOR		99

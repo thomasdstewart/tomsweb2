@@ -1,0 +1,18 @@
+BackupURI: http://wap.freeauth.org/backup.php
+MIDlet-1: FreeAuth, /FreeAuth.png, FreeAuth.FreeAuth
+MIDlet-Description: The Free Auth Project MIDLet
+MIDlet-Icon: /FreeAuth.png
+MIDlet-Info-URL: http://www.freeauth.org/index.php/Free_Auth_MIDLet
+MIDlet-Jar-Size: 121959
+MIDlet-Jar-URL: FreeAuth.jar
+MIDlet-Name: FreeAuth
+MIDlet-Permissions: javax.microedition.io.Connector.http
+MIDlet-Vendor: FreeAuth.org
+MIDlet-Version: 2.4.5
+MicroEdition-Configuration: CLDC-1.0
+MicroEdition-Profile: MIDP-2.0
+Modulus: CDA79E85C6163FD23CB91B3D9E8FDEF63712AED9BFDA5EDF1BAA966C071EF4B8EAAFE03CD9C23DE7DE2B0A12FEDE1E97EADEE0F05A24FC9C11A396B0659BD6582A828C106532717236A3234865A81C9A2CC91928966D9DBFC9CD81893C446C734DE4FCD5A1CF15EB7C8727D809DB3A4D2A05C64A8B5F027BE2A95F5EF54B6FCD
+Password: freeauth
+TimeStampURI: http://wap.freeauth.org/ts2.php
+UseNetwork: Y
+Username: freeauth

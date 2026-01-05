@@ -8,6 +8,7 @@
 stages:
 - test
 - secret-detection
+- pages
 sast:
   stage: test
 include:
@@ -17,3 +18,20 @@ variables:
   SECRET_DETECTION_ENABLED: 'true'
 secret_detection:
   stage: secret-detection
+
+# All available Hugo versions are listed here: https://gitlab.com/pages/hugo/container_registry
+image: registry.gitlab.com/pages/hugo/hugo_extended:latest
+#image: registry.gitlab.com/pages/hugo/hugo_extended:0.122.0
+
+pages:
+  script:
+    - apk add go git
+    - hugo version
+    - hugo mod graph
+    - hugo --logLevel debug --minify
+  artifacts:
+    paths:
+    - public
+  only:
+  - main
+

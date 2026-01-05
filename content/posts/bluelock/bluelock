@@ -1,0 +1,30 @@
+#!/bin/bash
+
+phone="00:12:62:13:DB:19"
+
+while true; do
+        #try to connect
+        sudo hcitool cc $phone &> /dev/null
+        #count connections
+        con=`hcitool con | grep $phone | wc -l`
+        #disconect
+        sudo hcitool dc $phone &> /dev/null
+
+        if [ $con -eq 1 ]; then
+                #we connected, we unlock
+                if [ `pgrep -u thomas xlock | wc -l` -gt 0 ]; then
+                        echo -n "U"
+                        pkill    xlock &> /dev/null
+                        pkill -9 xlock &> /dev/null
+                fi
+                echo -n "*"
+                sleep $(( 10 * 60 ))
+        else
+                #failed to connect, we lock
+                if [ `pgrep -u thomas xlock | wc -l` -eq 0 ]; then
+                        echo -n "L"
+                        xlock &> /dev/null &
+                fi
+                echo -n " "
+        fi
+done

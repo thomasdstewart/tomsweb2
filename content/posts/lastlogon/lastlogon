@@ -1,0 +1,66 @@
+#!/usr/bin/python
+import ldap
+import dns.resolver
+import datetime
+import time
+import sys
+import pprint
+pp = pprint.PrettyPrinter(depth=6)
+
+def getldap(host, username, password, basedn, filter, atribs):
+        l = ldap.initialize('ldap://' + host)
+        l.simple_bind_s(username, password)
+        return l.search_s(basedn, ldap.SCOPE_SUBTREE, filter, atribs)
+
+users = getldap("example.org",
+        'CN=username,OU=users,DC=example,DC=org',
+        'password',
+        'OU=users,DC=exmaple,DC=org',
+        "(&(objectClass=user)(sAMAccountName=*))",
+        ['sAMAccountName'])
+
+dcs = dns.resolver.query('_ldap._tcp.example.org', 'SRV')
+dclist = set()
+for dc in dcs:
+        dclist.add(dc.target.to_text()[:-1])
+
+oldlogons = {}
+for user in users:
+        for server in dclist:
+                res = getldap(server,
+                'CN=username,OU=users,DC=example,DC=org',
+                'query',
+                'OU=users,DC=example,DC=org',
+                "(sAMAccountName=%s)" % (user[1].get('sAMAccountName')[0]),
+                ['name', 'lastLogon', 'userAccountControl'])
+
+                name = res[0][1].get('name')[0]
+
+                if res[0][1].get('lastLogon') is None:
+                        lastlogon = 0
+                else:
+                        lastlogon = int(res[0][1].get('lastLogon')[0])
+                if lastlogon > 0:
+                        lastlogon = (lastlogon / 10000000) - 11644473600
+                lastlogon = datetime.datetime(*time.localtime(lastlogon)[0:7])
+
+                useraccountcontrol = int(res[0][1].get('userAccountControl')[0])
+                accountdisabled = bool( useraccountcontrol & 0x2 )
+
+                if not accountdisabled:
+                        if not oldlogons.has_key(name):
+                                oldlogons[name] = {server: lastlogon}
+                        else:
+                                oldlogons[name].update({server: lastlogon})
+
+for name, servers in oldlogons.iteritems():
+        newestlastlogon = datetime.datetime(*time.localtime(0)[0:7])
+        for server, lastlogon in servers.iteritems():
+                if lastlogon > newestlastlogon:
+                        newestlastlogon = lastlogon
+                
+        now = datetime.datetime.today()
+        age = datetime.timedelta(days=31)
+        if newestlastlogon < now - age:
+                print "%-20s,%s" % (name, newestlastlogon)
+

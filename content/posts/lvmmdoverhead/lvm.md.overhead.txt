@@ -1,0 +1,14 @@
+Version  1.03      ------Sequential Output------ --Sequential Input- --Random-
+                    -Per Chr- --Block-- -Rewrite- -Per Chr- --Block-- --Seeks--
+Machine        Size K/sec %CP K/sec %CP K/sec %CP K/sec %CP K/sec %CP  /sec %CP
+raw ext3        16G 47888  90 59053  47 29179  18 42548  72 70634  14  81.4   0
+raw lvm ext3    16G 46567  90 58946  46 28376  17 41678  72 70646  15  80.7   0
+raw md ext3     16G 47543  90 61954  44 26282  17 41427  71 69177  15  79.3   0
+raw md lvm ext3 16G 46948  90 62480  47 26428  17 40499  72 69228  15  79.2   0
+                    ------Sequential Create------ --------Random Create--------
+                    -Create-- --Read--- -Delete-- -Create-- --Read--- -Delete--
+files:max:min        /sec %CP  /sec %CP  /sec %CP  /sec %CP  /sec %CP  /sec %CP
+raw ext3       1024 16977  78 19371  26   742   4 13617  73  6583  13   389   2
+raw lvm ext3   1024 17842  77 18810  25   762   4 11449  57 21872  36   468   3
+raw md ext3    1024 19768  75 18818  25   775   4 11432  45  6166  13   382   2
+raw md lvm ext 1024 16465  77 17609  23   751   4 17446  76 19085  22   413   2

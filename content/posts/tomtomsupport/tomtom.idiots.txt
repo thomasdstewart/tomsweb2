@@ -1,0 +1,307 @@
+===============================================================================
+Customer (Thomas Stewart) - 24/04/2009 12.07 AM
+How do I change the device id assigned to my subscriptions, I do not have 
+tomtom home installed as it does not run on Linux.
+===============================================================================
+Response (Matthew D. (UK)) - 24/04/2009 09.27 AM
+Dear Mr Stewart,
+
+Thank you for contacting us in regards to a Device Code Change on your TomTom 
+account.
+
+The reference number for your query is 090424-003803.
+
+Before we continue, I would just like to clarify that there can only be one 
+TomTom device linked to your TomTom account at any one time.  If you have 
+purchased any PLUS Services on your account, these services can only be 
+installed and used on the device linked to your account as explained in our 
+Terms & Conditions.
+
+(For further details of our Terms and Conditions of use, please view the 
+following webpage - http://www.tomtom.com/legal/ )
+
+If you would like to link a new TomTom to your account, we require a copy of 
+your purchase receipt to reset the Device Code on your account.
+
+You can send this to us in any of the following 2 ways:
+
+1 - You can fax the receipt to us.
+        The Fax numbers is 0031 (0)20 8501072
+Please make sure that you write your Query Ref Number 090424-003803. on the fax 
+along with your email address (this is essential so that we can identify the 
+Fax)
+
+2 - You can send the receipt as an attachment.
+You can scan your receipt into your PC or take a digital photo and save it on 
+your desktop.  To reply to this email, please log in to your TomTom account via 
+the TomTom website.
+Click on \221My TomTom\222 in the top right -> \221My Questions History', click 
+on the title of your email then click on 'Update Question'.
+You can attach documents that you wish to send to us by clicking on 'Browse'.  
+You can then find the document you wish to attach and click on 'Add Attachment'.
+
+Once we have this information, we will be able to look at your situation and 
+advise you of what the next steps will be.
+
+PLEASE make sure that you send an authentic Proof of Purchase of Proof of 
+exchange.
+(We are unable to accept hand written or copy and pasted receipts).
+
+Please let me know if you have any further questions and I will be more than 
+happy to help you further.
+
+With Kind Regards
+
+Matt D
+===============================================================================
+Customer (Thomas Stewart) - 24/04/2009 09.50 PM
+OK, here is the full story. I bought a HTC P3300 a few years ago which had 
+TomTom Navigator 6 bundled with it pre-installed. It was first real experience 
+of TomTom and overall it became a vital to have it's capabilities at hand 24x7 
+on and off the road. However the P3300 has grown old (and warn out) so I 
+replaced it last month with a HTC Touch HD. This phone does not come with 
+TomTom pre-installed. So I tried to install TomTom Navigator 6 but 
+unfortunately it did not work. I assume it's because of the screen size and 
+after a few internet searches found many other people were having the same 
+problems. Most of them said that TomTom Navigator 7 fixed these issues, so I 
+decided to bite the bullet and re-buy the software I already owned. However I 
+could not find anywhere on your website to actually buy the mythical Navigator 
+7 product! After a good deal of searching I found that that you don't actually 
+sell it, you only ship it pre-installed on some HTC Touch Diamond's. Which left 
+me a bit stuck with a nasty taste in my mouth. However I do not give up that 
+easily, I 'found' a Navigator 7 installer that had been created by extracting 
+the Touch Diamonds software. This I installed and finally I had a working 
+device again.
+
+It was at this point that I tried to update TomTom traffic and TomTom safety 
+cameras at which point it gave me a message "This content was bought for 
+another device". This it why I want to change the device ID for my 
+subscriptions.
+
+As a side note you mention "there can only be one TomTom device linked to your 
+TomTom account at any one time", it seems a bit silly that you never expect one 
+person to buy more than one TomTom device? But back to you point, I fully 
+understand the above, I don't want my old P3300 to be associated with my 
+account anymore. TomTom is not even installed on it.
+
+The reason I mention all of the above is to explain why I don't have a 
+"purchase receipt" to either fax or email. As I have never been given one. So 
+where do we go from here?
+===============================================================================
+Response (Matthew D. (UK)) - 29/04/2009 03.11 PM
+Dear Mr Stewart,
+
+Thank you for contacting TomTom Customer Care
+The reference number for your query is 090424-003803.
+
+Unfortunately, if you did not get your copy of Navigator 7 preinstalled on a 
+phone then you are using an illegally copied version of our software. As a 
+TomTom representative, I have to ask you to remove this software from your 
+device. For your information, none of our maps or services will work with this 
+illegal version of software you have.
+
+If you can provide me with a proof of purchase for your new phone I will reset 
+the device code on your account, allowing you to install Navigator 6 on your 
+new device.
+
+Please let me know if you require any further assistance.
+
+With Kind Regards
+
+Matt D
+
+The TomTom Customer Care Team
+===============================================================================
+Customer (Thomas Stewart) - 29/04/2009 08.47 PM
+1. I can't provide proof of purchase, both phones were mobile phone upgrades. I 
+did not buy them.
+
+2. The device code has nothing to do with installing TomTom, this is about 
+un-associating my old phone with my TomTom online account.
+
+3. Even if I did provide proof of purchase, how is installing Navigator 6 on my 
+new phone going to help me. It does not work remember?
+===============================================================================
+Response (Matthew D. (UK)) - 01/05/2009 01.45 PM
+Dear Mr Stewart,
+
+Thank you for contacting TomTom Customer Care in regards to the RDS TMC receiver
+The reference number for your query is 090424-003803.
+
+If you have any issues with receiving traffic updates with your RDS TMC traffic 
+receiver, or that the TMC receiver is not recognized by your device, then 
+please do the following:-
+
+STEP 1 Install the latest version of TomTom Home
+
+If you haven't already done so, please download and Install the latest version 
+of TomTom Home from http://www.tomtom.com/home
+
+STEP 2 Make a Backup
+
+- Connect your TomTom to your computer and switch it on
+- On a PC, create a new folder on your desktop and call it 'Backup'
+
+- On a PC, Open 'My Computer', you will see the TomTom as a removable storage 
+device, e.g. TomTom (E:), double left click into it.
+- Click on Edit -> Select All, then click on 'Edit -> Copy'
+- Go to your Backup folder on your desktop that you have created, double left 
+click into it and click on 'Edit -> Paste'
+
+IMPORTANT: We advise you to follow the next steps ONLY if you have made a 
+successful backup of your device as described in Step 2. If you are unable to 
+complete step 2, please reply back to this email and let us know what happens.
+
+STEP 3 Delete the Application Files
+
+- Open My Computer in Windows; you will see the TomTom as a removable disk. 
+Double click into it.
+- You will see a list of yellow folders and a list of loose files
+- Delete all of the loose files and the GNS folder. (Loose files are the files 
+that are not Yellow Folders)
+ **IMPORTANT**: Any of the other YELLOW folders with their content must NOT be 
+deleted.
+
+STEP 4 - Now we need to delete the application files from your PC so that HOME 
+will offer them as an update
+
+\225 Now on your Computer, in the system tray, (in the bottom right hand corner 
+by the time, there is a little red TomTom HOME logo, if its not there, click    
+ on the little arrow pointing towards left to show all the hidden icons).  
+Right click on the TomTom logo and select exit.
+\225 Click on Start in the bottom left of your PC
+\225 Now select My documents -> TomTom -> HOME -> Downloads -> Complete
+\225 Please delete the yellow Program folder.
+
+STEP 5 - Update your device
+
+\225 Reset the TomTom with a paperclip for 30 seconds.
+\225 Connect your device to the PC and turn it on.
+\225 Open TomTom HOME: Start->All Programs->TomTom->TomTom HOME 2.
+\225 HOME will now load your updates (If this does not happen automatically, 
+click on Update My ONE/GO/Rider on the main menu of HOME.)
+\225 Make sure that only the application is marked with a green tick.
+\225 Click on Update and Install.
+\225 Once Installed, click on done.
+\225 You will now be prompted by HOME to restart your Device, just click ok.
+\225 In the Top left of HOME, click on 'Device -> Disconnect Device'.
+\225 Now please disconnect your TomTom from the computer and allow it to start 
+up normally.
+
+If you get \223No Maps Found\224 on your TomTom, please repeat Step 5 until the 
+application is no longer offered as an update.
+
+STEP 6 Run the Clear Flash Tool
+
+- Reconnect the TomTom to the computer and switch it on
+- Close TomTom HOME. In the bottom right hand corner of your screen, to the 
+left of the computer clock, right click on the red icon for TomTom Home and 
+choose 'Exit'.
+- Click on http://www.tomtom.com/updates/clear_flash/clear_flash.exe to run the 
+clear flash tool.
+(TomTom Home must be completely closed before running this tool)
+- Install the Clear Flash tool
+- Disconnect your TomTom from the Computer
+
+STEP 7 Connect your TMC Receiver
+
+- In your Car, lay out the RDS TMC Receiver in a straight line across your 
+dashboard
+- Switch your TomTom on
+- Connect the TMC receiver to your device and make sure that the receiver is 
+firmly plugged in. You might need to press a little bit harder to make sure.
+- You should see on the screen of the TomTom a message to say that the RDS TMC 
+receiver has been connected.
+- If not, try rotating the Plug of the TMC receiver connected to the unit by 
+1/4 turns, and see if the screen shows this message.
+
+Please also check to see if the RDS TMC socket is not damaged in anyway and 
+also if there the black 'O' Ring is not missing in the socket where you connect 
+the RDS TMC receiver.
+
+Please let us know if this has worked for you. If not, to help us verify that 
+you have the correct RDS TMC receiver for your device, can you please confirm 
+your TMC Receiver's article code and the Serial number for your TomTom product?
+
+The article code can be found on a white label on the cable of the TMC 
+Receiver, it usually begins with 4V00.XXX. Please state if the RDS TMC receiver 
+came 'inside the box' or whether it was bought separately.
+
+The Serial Number for your device can be found on the base of the TomTom device 
+by the barcode, and also, you can find it on the original box of your product.
+
+If you have any more questions, please let me know and I will be more than 
+happy to help you further.
+
+With Kind Regards
+
+Matt D
+
+The TomTom Customer Care Team
+===============================================================================
+Customer (Thomas Stewart)       01/05/2009 04.54 PM 
+RDS traffic has nothing whatsoever to do with my original question. I don't
+even own a TMC receiver. I use TomTom Navigator, so my Phone that runs TomTom
+Navigator will not have a TomTom serial number.
+
+Please can you address the questions in my previous question:
+1. I can't provide proof of purchase, both phones were mobile phone upgrades. I
+did not buy them.
+
+2. The device code has nothing to do with installing TomTom, this is about
+un-associating my old phone with my TomTom online account.
+
+3. Even if I did provide proof of purchase, how is installing Navigator 6 on my
+new phone going to help me. It does not work, remember only Navigator 7 works?
+
+Please do not just copy and paste another canned reply.
+===============================================================================
+Response (Matthew D. (UK)) - 04/05/2009 12.18 PM
+Dear Mr Stewart,
+
+Thank you for contacting TomTom Customer Care
+The reference number for your query is 090424-003803.
+
+Thank you for your query regarding your Navigator software.
+
+To allow me to investigate your query further, can you please provide me with 
+your System Information?
+
+Please make sure that your TomTom is connected when accessing the System 
+Information.
+
+This can be found by connecting your device to TomTom HOME and selecting Help > 
+Configuration info ( HOME version 1) or Help >System information (HOME version 
+2).
+
+Please 'left click' on the 'Copy to Clipboard' button.  Now you can 'Right 
+Click' > 'Paste' this information in the text box where you update your 
+questions.  (Please see the end of this email on
++how to do this)
+
+Once I have this information, I will be able to have an in depth look at your 
+TomTom and resolve the query more effectively.
+
+With Kind Regards
+
+Matt D
+
+The TomTom Customer Care Team
+
+Should you wish to reply to this email, please log in to your TomTom account 
+via the TomTom website.
+Click on \221My TomTom\222 in the top right -> \221My Questions History', click 
+on the title of your email then click on 'Update Question'.
+
+You can also attach documents that you wish to send to us by clicking on 
+'Browse'.  You can then find the document you wish to attach and click on 'Add 
+Attachment'.
+===============================================================================
+Customer (Thomas Stewart)       05/05/2009 04.01 PM 
+Again, how is the "System Information" going to help with the previous 
+questions?
+
+I said "Please do not just copy and paste another canned reply". These canned 
+messages are getting increasingly annoying. Especially as they have nothing 
+whatsoever to do the the actual problem.
+===============================================================================

@@ -1,0 +1,92 @@
+#!/usr/bin/perl -w
+use strict;
+use MP3::Info;
+
+sub printdir($); 
+sub printmp3($);
+sub makeplaylist($);
+
+my $base="/srv/mp3";
+&makeplaylist("playlist.all.m3u",       "Artists","Various Artists","Various Various","Unsorted");
+&makeplaylist("playlist.sorted.m3u",    "Artists","Various Artists","Various Various");
+&makeplaylist("playlist.audiobooks.m3u","Audio Books");
+
+#makes a playlist given outputfile, and subdirectories selected
+sub makeplaylist($) {
+        (my $file) = $_[0];
+        shift;
+        (my @dirs) = @_;
+
+        open FILE, "> $file" or die "Can't open $file";
+        print (FILE "#EXTM3U\n");
+        foreach(@dirs) { &printdir("$base/$_"); }
+        close FILE;
+}
+
+# Recurse directory and printmp3s the ones that are found
+sub printdir($) {
+        (my $path)=@_;
+
+        opendir(ROOT, $path);
+        my @files = CORE::readdir(ROOT);
+        closedir(ROOT);
+
+        @files = sort(@files);
+        foreach (@files) {
+                next if /^\.|\.\.$/;
+                my $filename    = "$path/$_";
+    
+                if (-d $filename) {
+                        &printdir($filename);
+                        next;
+                }
+    
+                if ($filename =~ /^.*mp3$/i) {
+                        &printmp3($filename);
+                }
+        }
+}
+
+# print a given MP3's information to FILE
+sub printmp3($){
+	(my $file) = @_;
+	my $info = get_mp3info($file);
+	my $tag = get_mp3tag($file);
+        my $secs; my $artist; my $album; my $tracknum; my $title;
+
+        if(defined($info->{SECS})) {
+                $secs = int($info->{SECS});
+        } else {
+                $secs = "0";
+        }
+	if (defined($tag)) {
+                if(defined($tag->{ARTIST})) {
+                        $artist = $tag->{ARTIST};
+                } else {
+                        $artist = "";
+                }
+                if(defined($tag->{ALBUM})) {
+                        $album = $tag->{ALBUM};
+                } else {
+                        $album = "";
+                }
+                if(defined($tag->{TRACKNUM})) {
+                        $tracknum = $tag->{TRACKNUM};
+                        $tracknum =~ s/^0//;
+                        $tracknum =~ s/^0//;
+                } else {
+                        $tracknum = "";
+                }
+                if(defined($tag->{TITLE})) {
+                        $title = $tag->{TITLE};
+                } else {
+                        $title = "";
+                }
+        
+	        print (FILE "#EXTINF:$secs,$artist - $album - $tracknum - $title\n");
+                print (FILE "$file\n");
+	} else {
+	        print (FILE "#EXTINF:$secs\n");
+                print (FILE "$file\n");
+	}
+}

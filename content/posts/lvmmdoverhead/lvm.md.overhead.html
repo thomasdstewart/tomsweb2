@@ -1,0 +1,27 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<HTML>
+<HEAD><TITLE>Bonnie++ V1.03 Benchmark results</TITLE>
+<STYLE type="text/css">
+TD.header {text-align: center; backgroundcolor: "#CCFFFF" }
+TD.rowheader {text-align: center; backgroundcolor: "#CCCFFF" }
+TD.size {text-align: center; backgroundcolor: "#CCCFFF" }
+TD.ksec {text-align: center; fontstyle: italic }
+</STYLE>
+<BODY>
+<TABLE ALIGN=center BORDER=3 CELLPADDING=2 CELLSPACING=1>
+<TR><TD COLSPAN=2 class="header"></TD>
+<TD COLSPAN=6 class="header"><FONT SIZE=+2><B>Sequential Output</B></FONT></TD>
+<TD COLSPAN=4 class="header"><FONT SIZE=+2><B>Sequential Input</B></FONT></TD>
+<TD COLSPAN=2 ROWSPAN=2 class="header"><FONT SIZE=+2><B>Random<BR>Seeks</B></FONT></TD>
+<TD COLSPAN=1 class="header"></TD>
+<TD COLSPAN=6 class="header"><FONT SIZE=+2><B>Sequential Create</B></FONT></TD>
+<TD COLSPAN=6 class="header"><FONT SIZE=+2><B>Random Create</B></FONT></TD>
+</tr>
+<TR><TD></TD><TD>Size:Chunk Size</TD><TD COLSPAN=2>Per Char</TD><TD COLSPAN=2>Block</TD><TD COLSPAN=2>Rewrite</TD><TD COLSPAN=2>Per Char</TD><TD COLSPAN=2>Block</TD><TD>Num Files</TD><TD COLSPAN=2>Create</TD><TD COLSPAN=2>Read</TD><TD COLSPAN=2>Delete</TD><TD COLSPAN=2>Create</TD><TD COLSPAN=2>Read</TD><TD COLSPAN=2>Delete</TD></TR><TR><TD COLSPAN=2></TD><TD class="ksec"><FONT SIZE=-2>K/sec</FONT></TD><TD class="ksec"><FONT SIZE=-2>% CPU</FONT></TD><TD class="ksec"><FONT SIZE=-2>K/sec</FONT></TD><TD class="ksec"><FONT SIZE=-2>% CPU</FONT></TD><TD class="ksec"><FONT SIZE=-2>K/sec</FONT></TD><TD class="ksec"><FONT SIZE=-2>% CPU</FONT></TD><TD class="ksec"><FONT SIZE=-2>K/sec</FONT></TD><TD class="ksec"><FONT SIZE=-2>% CPU</FONT></TD><TD class="ksec"><FONT SIZE=-2>K/sec</FONT></TD><TD class="ksec"><FONT SIZE=-2>% CPU</FONT></TD><TD class="ksec"><FONT SIZE=-2>/ sec</FONT></TD><TD class="ksec"><FONT SIZE=-2>% CPU</FONT></TD><TD></TD><TD class="ksec"><FONT SIZE=-2>/ sec</FONT></TD><TD class="ksec"><FONT SIZE=-2>% CPU</FONT></TD><TD class="ksec"><FONT SIZE=-2>/ sec</FONT></TD><TD class="ksec"><FONT SIZE=-2>% CPU</FONT></TD><TD class="ksec"><FONT SIZE=-2>/ sec</FONT></TD><TD class="ksec"><FONT SIZE=-2>% CPU</FONT></TD><TD class="ksec"><FONT SIZE=-2>/ sec</FONT></TD><TD class="ksec"><FONT SIZE=-2>% CPU</FONT></TD><TD class="ksec"><FONT SIZE=-2>/ sec</FONT></TD><TD class="ksec"><FONT SIZE=-2>% CPU</FONT></TD><TD class="ksec"><FONT SIZE=-2>/ sec</FONT></TD><TD class="ksec"><FONT SIZE=-2>% CPU</FONT></TD></TR>
+<TR><TD class="rowheader"><FONT SIZE=+1><B>raw ext3</B></FONT></TD><TD class="size">16G</TD><TD>47888</TD><TD>90</TD><TD>59053</TD><TD>47</TD><TD>29179</TD><TD>18</TD><TD>42548</TD><TD>72</TD><TD>70634</TD><TD>14</TD><TD>81.4</TD><TD>0</TD><TD>1024</TD><TD>16977</TD><TD>78</TD><TD>19371</TD><TD>26</TD><TD>742</TD><TD>4</TD><TD>13617</TD><TD>73</TD><TD>6583</TD><TD>13</TD><TD>389</TD><TD>2</TD></TR>
+<TR><TD class="rowheader"><FONT SIZE=+1><B>raw lvm ext3</B></FONT></TD><TD class="size">16G</TD><TD>46567</TD><TD>90</TD><TD>58946</TD><TD>46</TD><TD>28376</TD><TD>17</TD><TD>41678</TD><TD>72</TD><TD>70646</TD><TD>15</TD><TD>80.7</TD><TD>0</TD><TD>1024</TD><TD>17842</TD><TD>77</TD><TD>18810</TD><TD>25</TD><TD>762</TD><TD>4</TD><TD>11449</TD><TD>57</TD><TD>21872</TD><TD>36</TD><TD>468</TD><TD>3</TD></TR>
+<TR><TD class="rowheader"><FONT SIZE=+1><B>raw md ext3</B></FONT></TD><TD class="size">16G</TD><TD>47543</TD><TD>90</TD><TD>61954</TD><TD>44</TD><TD>26282</TD><TD>17</TD><TD>41427</TD><TD>71</TD><TD>69177</TD><TD>15</TD><TD>79.3</TD><TD>0</TD><TD>1024</TD><TD>19768</TD><TD>75</TD><TD>18818</TD><TD>25</TD><TD>775</TD><TD>4</TD><TD>11432</TD><TD>45</TD><TD>6166</TD><TD>13</TD><TD>382</TD><TD>2</TD></TR>
+<TR><TD class="rowheader"><FONT SIZE=+1><B>raw md lvm ext3</B></FONT></TD><TD class="size">16G</TD><TD>46948</TD><TD>90</TD><TD>62480</TD><TD>47</TD><TD>26428</TD><TD>17</TD><TD>40499</TD><TD>72</TD><TD>69228</TD><TD>15</TD><TD>79.2</TD><TD>0</TD><TD>1024</TD><TD>16465</TD><TD>77</TD><TD>17609</TD><TD>23</TD><TD>751</TD><TD>4</TD><TD>17446</TD><TD>76</TD><TD>19085</TD><TD>22</TD><TD>413</TD><TD>2</TD></TR>
+</TABLE>
+</BODY>
+</HTML>

@@ -1,0 +1,427 @@
+#!/bin/bash -eu
+#set -x
+# Backup Script
+#label tapes, so overwriting not posible (tar --list | head -1) maybe
+#tar --create --blocking-factor 128 --rsh-command=/usr/bin/ssh --verbose \
+#       --file backup@diamond:/dev/nst0
+
+partition=/srv/jade.backup
+tapedev=/dev/nst0
+remotehost=""
+dump="/ /home /usr/local"
+exclude='--exclude '/var/cache/swap' --exclude '/usr/local/vms/*' --exclude '/home/thomas/azureus/*' --exclude '/home/thomas/dvdrip/*''
+nofind=no
+mountpartition=yes
+
+umask 066
+hostname=`hostname | awk -F. '{print $1}'`
+dateparms="+%Y%m%d-%H%M%S"
+date=`date $dateparms`
+remoteuser=backup
+mailfrom="backupmaster@$hostname"
+mailto="root@$hostname"
+
+base=$partition/backup
+lock=$base/$hostname-lock
+rsyncstore="$base/rsync"
+snaps="$base/snap"
+findall="$base/findall"
+logs="$base/log"
+masterlog="$base/$hostname-master.log"
+
+if [ `uname -a | grep -i linux | wc -l` -gt 0 ]; then
+        sendmail=/usr/lib/sendmail
+        mt=/bin/mt-gnu
+        tar=/bin/tar
+        rsync=/usr/bin/rsync
+        gfind=/usr/bin/find
+        gzip=/bin/gzip
+        gunzip=/bin/gunzip
+        ssh=/usr/bin/ssh
+fi
+if [ `uname -a | grep -i sunos | wc -l` -gt 0 ]; then
+        sendmail=/usr/lib/sendmail
+        mt=/bin/mt
+        tar=/opt/csw/bin/gtar
+        rsync=/opt/csw/bin/rsync
+        gfind=/opt/csw/bin/gfind
+        gzip=/opt/csw/bin/gzip
+        gunzip=/opt/csw/bin/gunzip
+        ssh=/opt/csw/bin/ssh
+fi
+
+tapeuri=$tapedev
+if [ "$remotehost" != "" ]; then
+       tapeuri="$remoteuser@$remotehost:$tapedev" 
+       mt="ssh $remoteuser@$remotehost $mt"
+fi
+
+if [ `basename $0` = "nvs" ]; then
+        $mt -f $tapedev offline
+        echo "`date $dateparms` $hostname backup: $date $tapeuri offline" >> \
+                        $masterlog
+        sleep 30
+        while true; do
+                result=`$mt -f $tapedev status 2> /dev/null | tail -1 | \
+                                grep -v DR_OPEN | grep -v WR_PROT | \
+                                grep BOT | grep ONLINE | wc -l`
+                if [ $result -eq 1 ]; then
+                        echo -n "`date $dateparms` $hostname backup: " \
+                                        >> $masterlog
+                        echo "$date $tapeuri online" \
+                                        >> $masterlog
+                        sleep 30
+                        exit
+                fi
+                sleep 300 #5min
+        done
+        exit 1
+fi
+
+if [ $# -lt 1 ]; then
+        cmd=help
+else
+        cmd=$1
+fi
+case "$cmd" in
+        cronwrapper)
+                #Monthly Full, tape in last day of month
+                #Weekly Incr, tape in each sunday night
+                #Daily Incr, each morning to hd
+
+                #m h dom mon dow user command
+                #0 3 0   *   *   root /usr/local/bin/backup cronwrapper
+
+                if [ `date +%d` = "01" ]; then
+                        $0 rsync
+                        $0 full
+                        exit
+                fi
+                
+                if [ `date +%w` = "1"  ]; then
+                        $0 rsync
+                        $0 weekly
+                        exit
+                fi
+                
+                $0 rsync
+                exit ;;
+
+        full)   backuptype=full   ;;
+        weekly) backuptype=weekly ;;
+        daily)  backuptype=daily  ;;
+        rsync)  backuptype=rsync  ;;
+        
+        mp3)    dump="/srv/mp3"
+                backuptype=full ;;
+
+        preprmt)
+                if [ ! -f /root/.ssh/id_dsa ]; then
+                        ssh-keygen -t dsa -f /root/.ssh/id_dsa
+                        ln -s /root/.ssh/id_dsa.pub /root/.ssh/identity.pub
+                        ssh root@$remotehost "mkdir ~$remoteuser/.ssh && chown $remoteuser ~$remoteuser/.ssh && chmod 700 ~$remoteuser/.ssh"
+                        ssh-copy-id  backup@$remotehost
+                fi
+                ssh $remoteuser@$remotehost hostname
+                exit ;;
+
+        maptape)
+                $mt -f $tapedev rewind
+                while [ `$mt -f $tapedev status | grep EOD | wc -l` -eq 0 ]; do
+                        $tar --list --rsh-command=$ssh --verbose \
+                                        --file $tapedev --blocking-factor 64 \
+                                        | head -1
+                        result=`$mt -f $tapedev status | grep EOD | wc -l`
+                        if [ $result -eq 0 ]; then
+                                $mt -f $tapedev fsf
+                        fi
+                done
+                $mt -f $tapedev rewind
+                exit ;;
+
+        blanktape)
+                echo -n "Blanking tape in drive: $tapeuri "
+                echo "(10 seconds to abort with ctrl-c) "
+                for c in `seq 1 10`; do
+                        sleep 1
+                        echo -n "."
+                done
+                $tar --create --blocking-factor 64 --directory=/ \
+                                --rsh-command=$ssh --file $tapeuri dev/null
+                echo "done."
+                exit ;;
+
+        writelabel)
+                echo -n "Writing label: \"$2\" to tape in drive: $tapeuri "
+                echo "(10 seconds to abort with ctrl-c) "
+                for c in `seq 1 10`; do
+                        sleep 1
+                        echo -n "."
+                done
+                $mt -f $tapedev rewind
+                echo "$2" > $tapedev
+                echo "done."
+                exit ;;
+
+        readlabel)
+                $mt -f $tapedev rewind
+                cat $tapedev
+                exit ;;
+                
+        oldlogs)
+                #e.g. mv `backup oldlogs | xargs` /mnt/backup/backup/oldlogs/
+                #Only for fsen in $dump
+                for fs in $dump; do
+                        fsname=`echo "$fs" | sed 's/\///g'`
+                        if [ "$fsname" = "" ]; then
+                                fsname="root"
+                        fi
+
+                        #rsync's older then last weekly
+                        $gfind $logs/ -not -newer $logs/$hostname-$fsname-weekly.log.gz | grep $hostname-$fsname | grep rsync
+                        #weeky's older than last full
+                        $gfind $logs/ -not -newer $logs/$hostname-$fsname-full.log.gz   | grep $hostname-$fsname | grep weekly | grep -v $hostname-$fsname-weekly
+                done
+                exit ;;
+
+        oldsnaps)
+                #cd $snaps
+                for fs in $dump; do
+                        fsname=`echo "$fs" | sed 's/\///g'`
+                        if [ "$fsname" = "" ]; then
+                                fsname="root"
+                        fi
+
+                        #weeky's older than last full
+                        $gfind $snaps/ -not -newer $snaps/$hostname-$fsname-full.snap | grep $hostname-$fsname | grep weekly | grep -v $hostname-$fsname-weekly
+                done
+                exit ;;
+
+        verify) $tar --compare --blocking-factor 128 --directory=/ --multi-volume --file $tapeuri --rsh-command=$ssh; exit ;;
+        
+        restore) echo "$tar --extract --verbose --preserve-permissions --numeric-owner --label hostname-fs-date-type --rsh-command=$ssh --file $tapeuri --blocking-factor 64 --multi-volume --file $tapeuri (--listed-incremental=$snaps/hostname-fs-date-type.snap)"
+                 exit ;;
+
+        settings)
+                echo "dump: $dump" 
+                echo "remoteuser: $remoteuser" 
+                echo "remotehost: $remotehost" 
+                echo "tapedev: $tapedev" 
+                echo "exclude: $exclude" 
+                exit ;;
+
+        *)      echo "Backup Usage: backup usage"
+                echo "  cronwrapper - examine date and run correct backup type"
+                echo "  full|weekly|daily|rsync - run specifyed backup type"
+                echo "  mp3 - full mp3 backup to tape"
+                echo "  preprmt - prepare rmt"
+                echo "  maptape - list whats on a tape"
+                echo "  blanktape - wipes tape in drive"
+                echo "  writelabel- write label to tape in drive"
+                echo "  readlabel- read label to tape in drive"
+                echo "  oldlogs - prints list of old logs"
+                echo "  oldsnaps - prints list of old snaps"
+                echo "  verify - verify tape against disk"
+                echo "  restore - restore information"
+                echo "  settings - print local settings"
+                exit 1 ;;
+esac
+
+if [ "$remotehost" == "" ]; then
+        if [ ! -c $tapedev ]; then
+                echo "$tapedev does not exist"
+                exit 1
+        fi
+fi
+if [ "$remotehost" != "" ]; then
+        if ssh $remoteuser@$remotehost [ ! -c $tapedev ]; then
+                echo "$remoteuser@$remotehost:$tapedev does not exist"
+                exit 1
+        fi
+fi
+
+if [ "$backuptype" == "full" \
+                -o "$backuptype" == "weekly" \
+                -o "$backuptype" == "daily" ]; then
+        if [ "$tapedev" == "" ]; then
+                exit
+        fi
+        status=`$mt -f $tapedev status 2> /dev/null | tail -1 | grep -v DR_OPEN | grep -v WR_PROT | grep BOT | grep ONLINE | wc -l`
+        if [ $status -ne 1 ]; then
+                echo "$tapeuri not ready"
+                exit 1
+        fi
+fi
+
+if [ "`mount | grep $partition | wc -l | awk '{print $1}'`" = "0" ]; then
+        mount $partition
+fi
+
+if [ -f $lock ]; then
+        echo "$lock exists, backup allready running or backup premeturly died?"
+        exit 1
+fi
+touch $lock
+
+if [ -f $snaps/$hostname-current.snap ]; then
+        echo "$snaps/$hostname-current.snap exists, backup allready runing?"
+        exit 1
+fi
+
+case "$backuptype" in
+        full)   $mt -f $tapedev rewind ;;
+        weekly) $mt -f $tapedev eom ;;
+        daily)  $mt -f $tapedev eom ;;
+esac
+
+for dir in $base $rsyncstore $snaps $logs $findall; do
+        if [ ! -d $dir ]; then
+                mkdir -p $dir
+        fi
+done
+
+echo $date >> $base/$hostname-parttable
+fdisk -l   >> $base/$hostname-parttable
+
+if [ "$nofind" != "yes" ]; then
+        $gfind / -printf "%p %s\n" | $gzip > $findall/$hostname-$date.gz
+fi
+cp $0 $base/$hostname-`basename $0`
+
+echo "`date $dateparms` $hostname backup: $date $backuptype started" >> \
+                $masterlog
+backupstatus=""
+for fs in $dump; do
+        fsname=`echo "$fs" | sed 's/\///g'`
+        if [ "$fsname" = "" ]; then
+                fsname="root"
+        fi
+
+        label=$hostname-$fsname-$date-$backuptype
+        snap=$snaps/$label.snap
+        log=$logs/$label.log
+
+        tarparms="--create --listed-incremental=$snaps/$hostname-current.snap --file $tapeuri --rsh-command=$ssh --multi-volume --new-volume-script=nvs --blocking-factor 128 --record-size=262144 --label=$label --directory=$fs $exclude --one-file-system --verbose "
+        rsyncparms="-vaux --delete $exclude"
+
+        echo "`date $dateparms` $hostname backup: $date $backuptype $fs" >> $masterlog
+
+        case "$backuptype" in
+                full)   rm -f $snaps/$hostname-$fsname.full.snap ;;
+                weekly) cp $snaps/$hostname-$fsname-full.snap \
+                                        $snaps/$hostname-current.snap ;;
+                daily)  cp $snaps/$hostname-$fsname-weekly.snap \
+                                        $snaps/$hostname-current.snap ;;
+        esac
+        
+        set -f #turn off globbing for excludes
+        set +e #want to catch return vars
+        case "$backuptype" in
+                full)   $tar $tarparms $fs &> $log ;;
+                weekly) $tar $tarparms $fs &> $log ;;
+                daily)  $tar $tarparms $fs &> $log ;;
+                rsync)  mkdir -p $rsyncstore/$hostname.$fsname || true
+                        $rsync $rsyncparms $fs $rsyncstore/$hostname.$fsname \
+                                        &> $log ;;
+        esac
+        backupstatus="$backupstatus $fsname=$?\n"
+        set -e
+        set +f
+
+        $gzip $log
+        cp $log.gz $logs/$hostname-$fsname-$backuptype.log.gz
+        if [ "$backuptype" != "rsync" ]; then
+                mv $snaps/$hostname-current.snap $snap
+                cp $snap $snaps/$hostname-$fsname-$backuptype.snap
+        fi
+
+        echo "`date $dateparms` $hostname backup: $date $backuptype $fs done" \
+                        >> $masterlog
+done
+
+if [ "$backuptype" = "full" -o "$backuptype" = "weekly" ]; then
+        label=$hostname-$date-$backuptype
+        log=$logs/$label.log
+        tarparms="--create --file $tapeuri --blocking-factor 64 --label=$label --directory=$base --one-file-system --verbose"
+
+        echo "`date $dateparms` $hostname backup: $date $backuptype meta" \
+                        >> $masterlog
+        $tar $tarparms $snaps $findall $logs $masterlog &> $log || true
+        echo "`date $dateparms` $hostname backup: $date $backuptype meta done" \
+                        >> $masterlog
+
+        $mt -f $tapedev offline
+fi
+echo "`date $dateparms` $hostname backup: $date $backuptype finished" >> \
+                $masterlog
+
+df=`df -h $base | tail -1`
+mail=/tmp/backup.$date.$$
+cat << EOF > $mail
+From: $mailfrom
+To: $mailto
+Subject: Backup Completed
+MIME-Version: 1.0
+Content-Disposition: inline
+Content-Type: Multipart/Mixed;
+  boundary="Boundary-00=_aOVpAKnX+Ugowa1"
+
+
+--Boundary-00=_aOVpAKnX+Ugowa1
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Subject: 
+
+Host: $hostname, Date: $date, Type: $backuptype
+Device: `echo $df | awk '{print $1}'`, Size: `echo $df | awk '{print $2}'`, Used: `echo $df | awk '{print $3}'`, Avail: `echo $df | awk '{print $4}'`, Use%: `echo $df | awk '{print $5}'`
+Backup Status:
+`echo -en "$backupstatus"`
+
+Master Log:
+`cat $masterlog | grep $date`
+
+Errors:
+`$gunzip -c $logs/$hostname-*-$date-$backuptype.log.gz | grep "^tar:" | grep -v "Directory is new$" | grep -v "Directory has been renamed$" | grep -v "socket ignored$" | grep -v "from member names$" | head -1000`
+
+EOF
+
+for fs in $dump; do
+        fsname=`echo "$fs" | sed 's/\///g'`
+        if [ "$fsname" = "" ]; then
+                fsname="root"
+        fi
+
+        label=$hostname-$fsname-$date-$backuptype
+        logfilename=$label.log
+        logfile=$logs/$label.log.gz
+
+        cat << EOF >> $mail
+--Boundary-00=_aOVpAKnX+Ugowa1
+Content-Type: text/plain;
+  charset="us-ascii";
+  name="$logfilename"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+	filename="$logfilename"
+
+`$gunzip -c $logfile`
+
+EOF
+done
+
+echo -en "--Boundary-00=_aOVpAKnX+Ugowa1\n\n" >> $mail
+
+cat $mail | $sendmail $mailto
+rm -f $mail
+rm -f $lock
+
+if [ "$mountpartition" == "yes" ]; then
+        $(
+        while [ "`mount | grep $partition | wc -l | awk '{print $1}'`" = "1" ]; do
+                umount $partition || true
+                sleep 1
+        done ) &
+fi
+

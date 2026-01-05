@@ -1,0 +1,97 @@
+#!/usr/bin/perl -w
+# stp - SignTextProgram, receives nagios notifications and displays them on
+# a maplin LED display sign.
+# Copyright (C) 2006 Thomas Stewart <thomas@stewarts.org.uk>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+#Usage:
+#echo "plugin output" | stp.pl notificationtype hostalias [service]
+# notificationtype ::= [ PROBLEM | RECOVERY | ACKNOWLEDGEMENT ]
+#
+#eg echo "Connection refused" | stp.pl PROBLEM Coke SSH
+
+use strict;
+use DBI;
+
+my ($notificationtype, $hostalias, $servicedesc) = @ARGV;
+
+if(!defined $servicedesc) {
+        $servicedesc = "";
+}
+
+my $output = "";
+while (<STDIN>) {
+        chomp;
+        $output=$output . $_;
+}
+
+#connect to the database
+my $dbh = DBI->connect("dbi:SQLite:dbname=notifications");
+my $sth;
+
+#create the tables if they dont exist
+$dbh->do('CREATE TABLE IF NOT EXISTS notification(
+                hostalias TEXT NOT NULL,
+                servicedesc TEXT NOT NULL,
+                output TEXT NOT NULL,
+                PRIMARY KEY(hostalias, servicedesc))');
+
+#delete any entries so we remove fixed things and dont double report issues
+$sth = $dbh->prepare('DELETE FROM notification
+                WHERE hostalias = ? AND servicedesc = ?');
+$sth->execute($hostalias, $servicedesc);
+
+#we have a problem, add it to the database
+if($notificationtype eq "PROBLEM" || $notificationtype eq "FLAPPING") {
+        $sth = $dbh->prepare_cached('INSERT INTO notification VALUES (?,?,?)');
+        $sth->execute($hostalias, $servicedesc, $output);
+}
+
+#get the notifications to display. first get the host problems. second get the
+#service problems but dont include service problems that have host a problem
+
+#count the total number of notifications, ($sth->rows does not seem to work?)
+$sth = $dbh->prepare('SELECT COUNT(*) FROM notification
+                WHERE servicedesc = "" OR 
+                hostalias NOT IN(
+                        SELECT hostalias FROM notification
+                        WHERE servicedesc = "")');
+$sth->execute();
+my $totalnotifications = $sth->fetchrow_array;
+
+#get the notifications
+$sth = $dbh->prepare('SELECT * FROM notification
+                WHERE servicedesc = "" OR 
+                hostalias NOT IN(
+                        SELECT hostalias FROM notification
+                        WHERE servicedesc = "")');
+print $sth->execute();
+
+#generate the sign text
+my $currentnotification = 1;
+my $signtext = "";
+while (my @data = $sth->fetchrow_array()) {
+        $signtext = sprintf("%s(%s/%s) %s %s %s         ", $signtext,
+                $currentnotification, $totalnotifications,
+                $data[0], $data[1], $data[2]);
+        $currentnotification++;
+}
+
+#add some head and tail
+$signtext = "{clear}{speed=1}" . $signtext . "   {end}";
+#print $signtext;
+#do it
+`/usr/local/bin/sign.pl -f /dev/ttyUSB.led "$signtext"`

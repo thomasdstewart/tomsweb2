@@ -1,0 +1,197 @@
+#!/bin/bash 
+
+dev=eth0
+#scheduler=cbq
+scheduler=hbt
+tc=/sbin/tc
+
+# Print Status
+if [ "$1" = "status" ]; then
+        $tc -s qdisc ls dev $dev
+        $tc -s class ls dev $dev
+        exit
+fi
+
+# Clean up
+$tc qdisc del dev $dev root    2> /dev/null > /dev/null
+$tc qdisc del dev $dev ingress 2> /dev/null > /dev/null
+
+if [ "$1" = "stop" ]; then 
+        exit
+fi
+
+# Set link speed
+[ `date +%w` -eq 0  ] && offpeak=yes # Sat
+[ `date +%w` -eq 6  ] && offpeak=yes # Sun
+[ `date +%k` -ge 18 ] && offpeak=yes # After 6pm
+[ `date +%k` -lt 9  ] && offpeak=yes # Before 9am
+if [ -n "$offpeak" ]; then
+        downlink=2048 #2 Meg
+else
+        downlink=512 #0.5 Meg
+fi
+uplink=256
+
+# Scale link speed
+test -t 1 && echo -n "Line speed is $downlink/$uplink. "
+downlink=$[9*$downlink/10]
+uplink=$[9*$uplink/10]
+test -t 1 && echo "Shaping to $downlink/$uplink."
+
+# Setup Uplink
+case "$scheduler" in
+cbq)
+        $tc qdisc add dev $dev root handle 1: cbq avpkt 1000 bandwidth 10mbit 
+        $tc class add dev $dev parent 1:  classid 1:1  cbq rate ${uplink}kbit       allot 1500 prio 5 bounded isolated 
+        $tc class add dev $dev parent 1:1 classid 1:10 cbq rate ${uplink}kbit       allot 1600 prio 1 avpkt 1000
+        $tc class add dev $dev parent 1:1 classid 1:20 cbq rate $[8*$uplink/10]kbit allot 1600 prio 2 avpkt 1000
+        $tc class add dev $dev parent 1:1 classid 1:30 cbq rate $[6*$uplink/10]kbit allot 1600 prio 3 avpkt 1000
+        $tc class add dev $dev parent 1:1 classid 1:40 cbq rate $[4*$uplink/10]kbit allot 1600 prio 4 avpkt 1000
+	;;
+hbt)
+        $tc qdisc add dev $dev root handle 1: htb default 20
+        $tc class add dev $dev parent 1:  classid 1:1  htb rate ${uplink}kbit       burst 6k
+        $tc class add dev $dev parent 1:1 classid 1:10 htb rate ${uplink}kbit       burst 6k prio 1
+        $tc class add dev $dev parent 1:1 classid 1:20 htb rate $[9*$uplink/10]kbit burst 6k prio 2
+        $tc class add dev $dev parent 1:1 classid 1:30 htb rate $[8*$uplink/10]kbit burst 6k prio 3
+        $tc class add dev $dev parent 1:1 classid 1:40 htb rate $[4*$uplink/10]kbit burst 6k prio 4
+	;;
+*)
+	echo "$scheduler not a scheduler"
+        $0 stop
+	exit 1
+esac
+
+$tc qdisc add dev $dev parent 1:10 handle 10: sfq perturb 10
+$tc qdisc add dev $dev parent 1:20 handle 20: sfq perturb 10
+$tc qdisc add dev $dev parent 1:30 handle 30: sfq perturb 10
+$tc qdisc add dev $dev parent 1:40 handle 40: sfq perturb 10
+
+# Setup  Downlink
+$tc qdisc add dev $dev handle ffff: ingress
+$tc filter add dev $dev parent ffff: protocol ip prio 50 u32 match ip src \
+        0.0.0.0/0 police rate ${downlink}kbit burst 10k drop flowid :1
+
+# Filter traffic into classes
+
+# Template
+#$tc filter add dev $dev parent 1:0 protocol ip prio 10 u32
+#        match ip (dport|sport) bla 0xffff flowid 1:bla
+#        match ip (dst|src) bla flowid 1:bla
+
+# Antisteev
+#$tc filter add dev $dev parent 1:0 protocol ip prio 10 u32 \
+#        match ip dst 130.88.189.36 flowid 1:30
+
+# TOS Minimum Delay (ssh, NOT scp)
+$tc filter add dev $dev parent 1:0 protocol ip prio 10 u32 \
+        match ip tos 0x10 0xff  flowid 1:10
+
+# DNS
+$tc filter add dev $dev parent 1:0 protocol ip prio 10 u32 \
+        match ip dport 53 0xffff flowid 1:10
+
+# ICMP
+$tc filter add dev $dev parent 1:0 protocol ip prio 10 u32 \
+        match ip protocol 1 0xff flowid 1:10
+
+# Small Packets (<64 bytes)
+$tc filter add dev $dev parent 1: protocol ip prio 10 u32 \
+        match ip  protocol 6 0xff    \
+        match u8  0x05 0x0f at 0     \
+        match u16 0x0000 0xffc0 at 2 \
+        match u8  0x10 0xff at 33    \
+        flowid 1:10
+
+# PuTTY can't do TOS
+#$tc filter add dev $dev parent 1:0 protocol ip prio 10 u32 \
+#        match ip dport 22 0xffff  flowid 1:10
+
+# Remote Desktop
+$tc filter add dev $dev parent 1:0 protocol ip prio 10 u32 \
+        match ip dport 3389 0xffff flowid 1:10
+      
+# UDP
+$tc filter add dev $dev parent 1:0 protocol ip prio 10 u32 \
+        match ip protocol 17 0xff flowid 1:10
+
+# MSN
+#$tc filter add dev $dev parent 1:0 protocol ip prio 10 u32 \
+#        match ip dport 1863 0xffff flowid 1:10
+
+# ICQ
+#$tc filter add dev $dev parent 1:0 protocol ip prio 10 u32 \
+#        match ip dport 5190 0xffff flowid 1:10
+        
+# Jabber
+#$tc filter add dev $dev parent 1:0 protocol ip prio 10 u32 \
+#        match ip dport 5222 0xffff flowid 1:10
+#$tc filter add dev $dev parent 1:0 protocol ip prio 10 u32 \
+#        match ip dport 5223 0xffff flowid 1:10
+
+# IRC
+#$tc filter add dev $dev parent 1:0 protocol ip prio 10 u32 \
+#        match ip dport 6667 0xffff flowid 1:10
+
+# smtp
+#$tc filter add dev $dev parent 1:0 protocol ip prio 10 u32 \
+#        match ip dport 25 0xffff flowid 1:10
+
+# pop3
+#$tc filter add dev $dev parent 1:0 protocol ip prio 10 u32 \
+#        match ip dport 110 0xffff flowid 1:10
+
+# imap
+#$tc filter add dev $dev parent 1:0 protocol ip prio 10 u32 \
+#        match ip dport 143 0xffff flowid 1:10
+
+# Web (http)
+#$tc filter add dev $dev parent 1:0 protocol ip prio 10 u32 \
+#        match ip dport 80 0xffff flowid 1:10
+
+# Web (https)
+$tc filter add dev $dev parent 1:0 protocol ip prio 10 u32 \
+        match ip dport 443 0xffff flowid 1:10
+
+# FTP Love, FTP-Data hate
+$tc filter add dev $dev parent 1:0 protocol ip prio 10 u32 \
+        match ip dport 20 0xffff flowid 1:30
+$tc filter add dev $dev parent 1:0 protocol ip prio 10 u32 \
+        match ip dport 21 0xffff flowid 1:10
+
+# Rsync
+$tc filter add dev $dev parent 1:0 protocol ip prio 10 u32 \
+        match ip dport 873 0xffff flowid 1:40
+
+# Bittorrent
+for x in $(seq 6881 6889); do
+        $tc filter add dev $dev parent 1:0 protocol ip prio 10 u32 \
+                match ip dport $x 0xffff flowid 1:40
+        $tc filter add dev $dev parent 1:0 protocol ip prio 10 u32 \
+                match ip sport $x 0xffff flowid 1:40
+done
+
+# Direct Connect 
+for x in 411 1412 $(seq 5000 5020); do
+        $tc filter add dev $dev parent 1:0 protocol ip prio 10 u32 \
+                match ip dport $x 0xffff flowid 1:40
+        $tc filter add dev $dev parent 1:0 protocol ip prio 10 u32 \
+                match ip sport $x 0xffff flowid 1:40
+done
+
+# Steel Law rocks!
+for x in $(seq 40000 40040); do
+        $tc filter add dev $dev parent 1:0 protocol ip prio 10 u32 \
+                match ip dport $x 0xffff flowid 1:10
+done
+
+# for iptables -set-mark
+$tc filter add dev $dev parent 1:0 protocol ip prio 1 handle 1 fw flowid 1:10
+$tc filter add dev $dev parent 1:0 protocol ip prio 1 handle 2 fw flowid 1:20
+$tc filter add dev $dev parent 1:0 protocol ip prio 1 handle 3 fw flowid 1:30
+$tc filter add dev $dev parent 1:0 protocol ip prio 1 handle 4 fw flowid 1:40
+
+# rest is 'non-interactive' ie 'bulk' and ends up in 1:20
+$tc filter add dev $dev parent 1:0 protocol ip prio 18 u32 \
+        match ip dst 0.0.0.0/0 flowid 1:20
+

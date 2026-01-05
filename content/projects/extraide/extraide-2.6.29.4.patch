@@ -1,0 +1,75 @@
+diff -urN linux-2.6.29.4.orig/drivers/ide/ide-probe.c linux-2.6.29.4/drivers/ide/ide-probe.c
+--- linux-2.6.29.4.orig/drivers/ide/ide-probe.c	2009-05-19 00:52:34.000000000 +0100
++++ linux-2.6.29.4/drivers/ide/ide-probe.c	2009-06-01 22:22:39.000000000 +0100
+@@ -1070,7 +1070,10 @@
+ 
+ 	disk->major = hwif->major;
+ 	disk->first_minor = unit << PARTN_BITS;
+-	sprintf(disk->disk_name, "hd%c", 'a' + hwif->index * MAX_DRIVES + unit);
++	sprintf(disk->disk_name, "hd%c",
++			(hwif->index * MAX_DRIVES + unit) < 26 ?
++				('a' + hwif->index * MAX_DRIVES + unit) :
++				('A' + hwif->index * MAX_DRIVES + unit - 26) );
+ 	disk->queue = drive->queue;
+ }
+ 
+@@ -1277,7 +1280,8 @@
+ 
+ static const u8 ide_hwif_to_major[] =
+ 	{ IDE0_MAJOR, IDE1_MAJOR, IDE2_MAJOR, IDE3_MAJOR, IDE4_MAJOR,
+-	  IDE5_MAJOR, IDE6_MAJOR, IDE7_MAJOR, IDE8_MAJOR, IDE9_MAJOR };
++	  IDE5_MAJOR, IDE6_MAJOR, IDE7_MAJOR, IDE8_MAJOR, IDE9_MAJOR,
++	  IDE10_MAJOR, IDE11_MAJOR, IDE12_MAJOR, IDE13_MAJOR };
+ 
+ static void ide_port_init_devices_data(ide_hwif_t *hwif)
+ {
+@@ -1298,7 +1302,7 @@
+ 		drive->special.b.set_geometry	= 1;
+ 		drive->name[0]			= 'h';
+ 		drive->name[1]			= 'd';
+-		drive->name[2]			= 'a' + j;
++		drive->name[2]			= (j<26) ? ('a'+j) : ('A'+j-26);
+ 		drive->max_failures		= IDE_DEFAULT_MAX_FAILURES;
+ 
+ 		INIT_LIST_HEAD(&drive->list);
+@@ -1315,7 +1319,7 @@
+ 	hwif->name[0]	= 'i';
+ 	hwif->name[1]	= 'd';
+ 	hwif->name[2]	= 'e';
+-	hwif->name[3]	= '0' + index;
++	hwif->name[3]   = (index < 10) ? ('0' + index) : ('a' + index - 10);
+ 
+ 	init_completion(&hwif->gendev_rel_comp);
+ 
+diff -urN linux-2.6.29.4.orig/include/linux/ide.h linux-2.6.29.4/include/linux/ide.h
+--- linux-2.6.29.4.orig/include/linux/ide.h	2009-05-19 00:52:34.000000000 +0100
++++ linux-2.6.29.4/include/linux/ide.h	2009-06-01 22:12:24.000000000 +0100
+@@ -216,7 +216,7 @@
+ #include <asm-generic/ide_iops.h>
+ #endif
+ 
+-#define MAX_HWIFS	10
++#define MAX_HWIFS	14
+ 
+ /* Currently only m68k, apus and m8xx need it */
+ #ifndef IDE_ARCH_ACK_INTR
+diff -urN linux-2.6.29.4.orig/include/linux/major.h linux-2.6.29.4/include/linux/major.h
+--- linux-2.6.29.4.orig/include/linux/major.h	2009-05-19 00:52:34.000000000 +0100
++++ linux-2.6.29.4/include/linux/major.h	2009-06-01 22:13:47.000000000 +0100
+@@ -106,11 +106,16 @@
+ #define IDE7_MAJOR		89
+ #define IDE8_MAJOR		90
+ #define IDE9_MAJOR		91
++#define IDE10_MAJOR		92
++#define IDE11_MAJOR		93
+ 
+ #define DASD_MAJOR		94
+ 
+ #define MDISK_MAJOR		95
+ 
++#define IDE12_MAJOR		96
++#define IDE13_MAJOR		97
++
+ #define UBD_MAJOR		98
+ 
+ #define PP_MAJOR		99

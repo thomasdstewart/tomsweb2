@@ -1,0 +1,52 @@
+.blog {
+	font-family: "Trebuchet MS";
+	font-size: 13px;
+	color: #666666;
+}
+.contributorchoice {
+	font-family: "Trebuchet MS";
+	font-size: 13px;
+	color: #990066;
+}
+.general {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	color: #666666;
+}
+.sidebar {
+	font-family: "Trebuchet MS";
+	font-size: 12px;
+	font-style: italic;
+	color: #660099;
+}
+.frontpage {
+	font-family: "Trebuchet MS";
+	font-size: 13px;
+	color: #0033CC;
+}
+.geoffspeak {
+	font-family: "Trebuchet MS";
+	font-size: 13px;
+	font-style: italic;
+	color: #660066;
+}
+.someoneelsespeak {
+	font-family: "Trebuchet MS";
+	font-size: 13px;
+	font-style: italic;
+	color: #0033CC;
+}
+.crosshead {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	color: #0099FF;
+	font-weight: bold;
+
+}
+.bloghead {
+	font-size: 13px;
+	color: #0099FF;
+	font-weight: bold;
+	font-family: "Trebuchet MS";
+
+}
