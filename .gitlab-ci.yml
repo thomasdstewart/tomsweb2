@@ -18,14 +18,10 @@ variables:
 secret_detection:
   stage: secret-detection
 
-# All available Hugo versions are listed here: https://gitlab.com/pages/hugo/container_registry
-#image: registry.gitlab.com/pages/hugo/hugo_extended:latest
-#image: registry.gitlab.com/pages/hugo/hugo_extended:0.122.0
-image: hugomods/hugo:exts-0.154.1
+image: ghcr.io/gohugoio/hugo:v0.154.1
 
 pages:
   script:
-    - apk add go git
     - hugo version
     - hugo mod graph
     - hugo --logLevel debug --minify
