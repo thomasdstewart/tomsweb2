@@ -18,9 +18,10 @@ variables:
 secret_detection:
   stage: secret-detection
 
-image: ghcr.io/gohugoio/hugo:v0.154.1
-
 pages:
+  image:
+    name: ghcr.io/gohugoio/hugo:v0.154.1
+    entrypoint: [""]
   script:
     - hugo version
     - hugo mod graph
