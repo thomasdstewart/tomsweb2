@@ -2,3 +2,7 @@ public/
 resources/
 .hugo_build.lock
 go.sum
+terraform/.terraform/*
+terraform/.terraform.lock.hcl
+terraform/.tfplan
+terraform/.output.json
