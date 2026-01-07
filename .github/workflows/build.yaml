@@ -7,6 +7,9 @@ on:
     paths: "*"
   workflow_dispatch:
 
+env:
+  AWS_REGION: us-east-1
+
 permissions:
   id-token: write
   contents: read
