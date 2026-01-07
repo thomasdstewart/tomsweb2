@@ -54,7 +54,7 @@
 
 [[main]]
   name = "Home"
-  pageRef = "home"
+  pageRef = "/"
   weight = 10
 
 [[main]]
@@ -89,7 +89,7 @@
 
 [[footer]]
   name = "Home"
-  pageRef = "home"
+  pageRef = "/"
   weight = 10
 
 [[footer]]
