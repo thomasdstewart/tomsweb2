@@ -9,19 +9,38 @@ stages:
 - test
 - secret-detection
 - deploy
-sast:
-  stage: test
+
+variables:
+  SECRET_DETECTION_ENABLED: 'true'
+
 include:
 - template: Security/SAST.gitlab-ci.yml
 - template: Security/Secret-Detection.gitlab-ci.yml
-variables:
-  SECRET_DETECTION_ENABLED: 'true'
-  ROLE_ARN: 'arn:aws:iam::597088038311:role/devops'
-  AWS_S3_BUCKET_NAME: 'tomsweb2-maekeofieshu'
+
+sast:
+  stage: test
 secret_detection:
   stage: secret-detection
 
-pages:
+sync-repo:
+  stage: test
+  script:
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | base64 -d | ssh-add -
+    - ssh-add -l
+    - mkdir -p ~/.ssh
+    - ssh-keyscan github.com gitlab.com >> ~/.ssh/known_hosts
+    - cd ~
+    - set -x
+    - test ! -d tomsweb2.git && git clone --mirror git@gitlab.com:thomasdstewart/tomsweb2.git
+    - cd tomsweb2.git && git fetch --all --prune && git push --mirror --prune git@githab.com:thomasdstewart/tomsweb2.git
+  cache:
+    key: tomsweb2
+    paths:
+      - tomeweb2.git
+
+generate:
+  stage: test
   image:
     name: ghcr.io/gohugoio/hugo:v0.154.1
     entrypoint: [""]
@@ -50,3 +69,4 @@ awssync:
     - cat ~/.aws/config
   script:
     - aws --profile devops s3 sync public/. s3://$AWS_S3_BUCKET_NAME/
+    - aws --profile devops cloudfront create-invalidation --distribution-id=AWS_CLOUDFRONT_DISTRIBUTION_ID --paths /*

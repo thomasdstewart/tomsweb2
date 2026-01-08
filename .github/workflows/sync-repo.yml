@@ -1,0 +1,34 @@
+---
+name: Sync repo
+
+on:
+  push:
+    branches: ["main"]
+    paths: "*"
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Sync
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Cache repos
+        id: cache-repos
+        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb #v5.0.1
+        with:
+          path: ~/
+          key: repos
+
+      - name: Sync repos
+        id: sync-repos
+        run: |
+          eval $(ssh-agent -s)
+          echo '${{ secrets.SSH_PRIVATE_KEY }}' | base64 -d | ssh-add -
+          ssh-add -l
+          mkdir -p ~/.ssh
+          ssh-keyscan github.com gitlab.com >> ~/.ssh/known_hosts
+          cd ~
+          set -x
+          test ! -d tomsweb2.git && git clone --mirror git@github.com:thomasdstewart/tomsweb2.git
+          cd tomsweb2.git && git fetch --all --prune && git push --mirror --prune git@gitlab.com:thomasdstewart/tomsweb2.git 
