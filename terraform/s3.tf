@@ -2,7 +2,7 @@ module "s3_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "5.9.1"
 
-  bucket                  = "tomsweb2-maekeofieshu"
+  bucket                  = "tomsweb2-uwunuithaesa"
   block_public_acls       = false
   block_public_policy     = false
   ignore_public_acls      = false
