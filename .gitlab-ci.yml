@@ -48,5 +48,4 @@ awscli:
     - cat ~/.aws/config
   script:
     - aws --profile oidc sts get-caller-identity
-    - aws --profile oidc s3 ls
     - aws --profile oidc s3 ls tomsweb2-maekeofieshu
