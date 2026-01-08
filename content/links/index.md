@@ -1,6 +1,7 @@
 ---
 title: "Links"
 date: 2020-04-05
+showPagination: false
 ---
 
 [![FSF member number 1207](fsf.png)](http://www.fsf.org/register_form?referrer=1207)
