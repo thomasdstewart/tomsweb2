@@ -33,7 +33,7 @@ sync-repo:
     - cd ~
     - set -x
     - test ! -d tomsweb2.git && git clone --mirror git@gitlab.com:thomasdstewart/tomsweb2.git
-    - cd tomsweb2.git && git fetch --all --prune && git push --mirror --prune git@githab.com:thomasdstewart/tomsweb2.git
+    - cd tomsweb2.git && git fetch --all --prune && git push --mirror --prune git@github.com:thomasdstewart/tomsweb2.git
   cache:
     key: tomsweb2
     paths:
