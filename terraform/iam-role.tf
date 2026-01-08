@@ -54,4 +54,13 @@ data "aws_iam_policy_document" "devops" {
       "${module.s3_bucket.s3_bucket_arn}/*"
     ]
   }
+  statement {
+    effect = "Allow"
+    actions = [
+      "cloudfront:CreateInvalidation"
+    ]
+    resources = [
+      "${module.cloudfront.cloudfront_distribution_arn}"
+    ]
+  }
 }

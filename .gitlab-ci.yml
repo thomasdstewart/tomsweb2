@@ -30,8 +30,6 @@ sync-repo:
     - ssh-add -l
     - mkdir -p ~/.ssh
     - ssh-keyscan github.com gitlab.com >> ~/.ssh/known_hosts
-    - cd ~
-    - set -x
     - test ! -d tomsweb2.git && git clone --mirror git@gitlab.com:thomasdstewart/tomsweb2.git
     - cd tomsweb2.git && git fetch --all --prune && git push --mirror --prune git@github.com:thomasdstewart/tomsweb2.git
   cache:
@@ -69,4 +67,4 @@ awssync:
     - cat ~/.aws/config
   script:
     - aws --profile devops s3 sync public/. s3://$AWS_S3_BUCKET_NAME/
-    - aws --profile devops cloudfront create-invalidation --distribution-id=AWS_CLOUDFRONT_DISTRIBUTION_ID --paths /*
+    - aws --profile devops cloudfront create-invalidation --distribution-id=$AWS_CLOUDFRONT_DISTRIBUTION_ID --paths /*
