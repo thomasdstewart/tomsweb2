@@ -16,6 +16,7 @@ include:
 variables:
   SECRET_DETECTION_ENABLED: 'true'
   ROLE_ARN: 'arn:aws:iam::597088038311:role/devops'
+  AWS_S3_BUCKET_NAME: 'tomsweb2-maekeofieshu'
 secret_detection:
   stage: secret-detection
 
@@ -33,8 +34,8 @@ pages:
   only:
   - main
 
-awscli:
-  stage: test
+awssync:
+  stage: deploy
   image:
     name: docker.io/amazon/aws-cli:latest
     entrypoint: [""]
@@ -44,8 +45,7 @@ awscli:
   before_script:
     - mkdir -p ~/.aws
     - echo "${AWS_OIDC_TOKEN}" > /tmp/web_identity_token
-    - echo -e "[profile oidc]\nrole_arn=${ROLE_ARN}\nweb_identity_token_file=/tmp/web_identity_token" > ~/.aws/config
+    - echo -e "[profile devops]\nrole_arn=${ROLE_ARN}\nweb_identity_token_file=/tmp/web_identity_token" > ~/.aws/config
     - cat ~/.aws/config
   script:
-    - aws --profile oidc sts get-caller-identity
-    - aws --profile oidc s3 ls tomsweb2-maekeofieshu
+    - aws --profile devops s3 sync public/. s3://$AWS_S3_BUCKET_NAME/
