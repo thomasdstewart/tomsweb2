@@ -48,6 +48,6 @@ awscli:
     - echo -e "[profile oidc]\nrole_arn=${ROLE_ARN}\nweb_identity_token_file=/tmp/web_identity_token" > ~/.aws/config
     - cat ~/.aws/config
   script:
-    - aws sts get-caller-identity
-    - aws s3 ls
-    - aws s3 ls tomsweb2-maekeofieshu
+    - aws --profile oidc sts get-caller-identity
+    - aws --profile oidc s3 ls
+    - aws --profile oidc s3 ls tomsweb2-maekeofieshu
