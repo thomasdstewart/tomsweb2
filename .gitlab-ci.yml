@@ -8,6 +8,7 @@
 stages:
 - test
 - secret-detection
+- deploy
 sast:
   stage: test
 include:
