@@ -2,14 +2,31 @@ module "iam_github_oidc_role_devops" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role"
   version = "6.2.3"
 
-  use_name_prefix    = false
-  name               = "devops"
-  enable_github_oidc = true
+  use_name_prefix = false
+  name            = "devops"
 
-  oidc_wildcard_subjects = [
-    "repo:thomasdstewart/tomsweb2:ref:refs/heads/main",
-    "repo:thomasdstewart/tomsweb2:ref:refs/*",
-  ]
+  trust_policy_permissions = {
+    GitlLabOidcAuth = {
+      actions = [
+        "sts:AssumeRoleWithWebIdentity",
+      ]
+
+      principals = [{
+        type = "Federated"
+        identifiers = [
+          module.iam_oidc_provider.arn
+        ]
+      }]
+
+      condition = [{
+        test     = "StringEquals"
+        variable = "gitlab.com:sub"
+        values = [
+          "project_path:thomasdstewart/tomsweb2:ref_type:branch:ref:main",
+        ]
+      }]
+    }
+  }
 
   policies = {
     devops = aws_iam_policy.devops.arn

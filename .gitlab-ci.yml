@@ -15,6 +15,7 @@ include:
 - template: Security/Secret-Detection.gitlab-ci.yml
 variables:
   SECRET_DETECTION_ENABLED: 'true'
+  ROLE_ARN: 'arn:aws:iam::597088038311:role/devops'
 secret_detection:
   stage: secret-detection
 
@@ -32,3 +33,21 @@ pages:
   only:
   - main
 
+awscli:
+  stage: test
+  image:
+    name: docker.io/amazon/aws-cli:latest
+    entrypoint: [""]
+  id_tokens:
+    GITLAB_OIDC_TOKEN:
+      aud: https://gitlab.com
+  before_script:
+    - mkdir -p ~/.aws
+    - echo "${GITLAB_OIDC_TOKEN}" > /tmp/web_identity_token
+    - cat /tmp/web_identity_token
+    - echo -e "[profile oidc]\nrole_arn=${ROLE_ARN}\nweb_identity_token_file=/tmp/web_identity_token" > ~/.aws/config
+    - cat ~/.aws/config
+  script:
+    - aws sts get-caller-identity
+    - aws s3 ls
+    - aws s3 ls tomsweb2-maekeofieshu
