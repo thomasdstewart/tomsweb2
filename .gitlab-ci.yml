@@ -39,15 +39,14 @@ awscli:
     name: docker.io/amazon/aws-cli:latest
     entrypoint: [""]
   id_tokens:
-    GITLAB_OIDC_TOKEN:
-      aud: https://gitlab.com
+    AWS_OIDC_TOKEN:
+      aud: sts.amazonaws.com
   before_script:
     - mkdir -p ~/.aws
     - echo "${GITLAB_OIDC_TOKEN}" > /tmp/web_identity_token
     - echo -e "[profile oidc]\nrole_arn=${ROLE_ARN}\nweb_identity_token_file=/tmp/web_identity_token" > ~/.aws/config
     - cat ~/.aws/config
   script:
-    - env
     - aws --profile oidc sts get-caller-identity
     - aws --profile oidc s3 ls
     - aws --profile oidc s3 ls tomsweb2-maekeofieshu
