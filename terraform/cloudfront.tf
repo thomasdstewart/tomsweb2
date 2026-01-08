@@ -16,26 +16,27 @@ module "cloudfront" {
   wait_for_deployment = false
 
   origin = {
-    "tomsweb-6cfd32.gitlab.io" = {
-      domain_name = "tomsweb-6cfd32.gitlab.io"
+    "tomsweb2-maekeofieshu" = {
+      domain_name = module.s3_bucket.s3_bucket_website_endpoint
       custom_origin_config = {
         http_port              = 80
         https_port             = 443
-        origin_protocol_policy = "https-only"
+        origin_protocol_policy = "http-only"
         origin_ssl_protocols   = ["TLSv1.2"]
+
       }
     }
   }
 
   default_cache_behavior = {
-    target_origin_id       = "tomsweb-6cfd32.gitlab.io"
+    target_origin_id       = "tomsweb2-maekeofieshu"
     viewer_protocol_policy = "redirect-to-https"
 
-    allowed_methods = ["GET", "HEAD", "OPTIONS"]
+    allowed_methods = ["GET", "HEAD"]
     cached_methods  = ["GET", "HEAD"]
 
     compress                     = true
-    cache_policy_name            = "Managed-CachingDisabled"
+    cache_policy_name            = "Managed-CachingOptimized"
     response_headers_policy_name = "Managed-SecurityHeadersPolicy"
     use_forwarded_values         = false
   }

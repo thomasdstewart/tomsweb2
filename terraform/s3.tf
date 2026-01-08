@@ -7,6 +7,11 @@ module "s3_bucket" {
   block_public_policy     = false
   ignore_public_acls      = false
   restrict_public_buckets = false
+
+  website = {
+    index_document = "index.html"
+    error_document = "index.html"
+  }
 }
 
 resource "aws_s3_bucket_policy" "s3_bucket_policy" {
