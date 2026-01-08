@@ -43,7 +43,7 @@ awscli:
       aud: sts.amazonaws.com
   before_script:
     - mkdir -p ~/.aws
-    - echo "${GITLAB_OIDC_TOKEN}" > /tmp/web_identity_token
+    - echo "${AWS_OIDC_TOKEN}" > /tmp/web_identity_token
     - echo -e "[profile oidc]\nrole_arn=${ROLE_ARN}\nweb_identity_token_file=/tmp/web_identity_token" > ~/.aws/config
     - cat ~/.aws/config
   script:
