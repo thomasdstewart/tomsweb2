@@ -16,6 +16,9 @@ variables:
 include:
 - template: Security/SAST.gitlab-ci.yml
 - template: Security/Secret-Detection.gitlab-ci.yml
+- remote: https://gitlab.com/thomasdstewart-infra/docker-linter/-/raw/main/linter.gitlab-ci.yml
+- template: Docker.gitlab-ci.yml
+
 
 sast:
   stage: test
