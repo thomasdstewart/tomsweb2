@@ -11,7 +11,7 @@ So you have a mobile broadband dongle and you want to use it on Linux, one
 option is to just plug it in and from Gnome 3 it just works and can be set-up
 instantly with NetworkManager. However I require something more permanent,
 something that will start at boot, be less interactive and stay up. There is a
-lot of (mis)information out there about how to do this with various programs and
+lot of misinformation out there about how to do this with various programs and
 scripts to copy and paste. Lots of wvdial configurations and lots of poking
 about in /etc/ppp creating and modifying files etc.
 

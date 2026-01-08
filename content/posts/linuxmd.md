@@ -46,7 +46,7 @@ $
   optional (F) next to the device, this signifies the device has failed either
   due to a read failure or manually failed with an mdadm command.
 - The first thing on the next line if the arrays size in blocks.
-- The rest of the line is personality dependant, for linear and raid0 it just
+- The rest of the line is personality dependent, for linear and raid0 it just
   shows the rounding in k and the chunk*size in k respectfully. When using raid1
   you get more useful information. First is a set of square brackets with 2
   numbers in. The first number is the number of devices in the mirror and the

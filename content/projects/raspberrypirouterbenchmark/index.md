@@ -792,7 +792,7 @@ root@jessie-rpi:~#
 
 ### Process tables
 
-As I mentioned the Raspberry machines were fairly simple without many backgroud
+As I mentioned the Raspberry machines were fairly simple without many background
 tasks running that could potentially effect the results. Next is the full
 process listing from both.
 

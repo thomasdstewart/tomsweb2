@@ -35,7 +35,7 @@ uid       [ultimate] Thomas Stewart <thomas@stewarts.org.uk>
 [Old Key Stats](http://pgp.cs.uu.nl/mk_path.cgi?STAT=68A70C48+&STATS=statistics)
 [New Key Stats](http://pgp.cs.uu.nl/mk_path.cgi?STAT=CD617CF2+&STATS=statistics)
 
-Some excelent Open PGP resources and help:
+Some excellent Open PGP resources and help:
 
 - https://we.riseup.net/riseuplabs+paow/openpgp-best-practices
 - http://ekaia.org/blog/2009/05/10/creating-new-gpgkey/

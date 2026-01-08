@@ -431,5 +431,5 @@ sudo nmcli dev wifi connect "MyWifi" password "my-password"
 - Package Linux
 - Update Linux
 - Repackage clockworkpi debs
-- Swtich to fbturbo
+- Switch to fbturbo
   https://forum.clockworkpi.com/t/r01-fbturbo-accelerated-2d-graphics-in-x11/8900

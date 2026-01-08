@@ -444,7 +444,7 @@ a associated disk. Again virt-install is used, however it it given the -
 -dry-run option to output an xml definition of the virtual machine that can be
 fed into virsh. This way I ended up with 3 virtual machines ready to run. Again
 60G disks are used, however not all that space is needed. By default we create
-the ironic nova flavors however in later versions of openstack these are created
+the ironic nova flavors however in later versions of OpenStack these are created
 for us. Also man examples online use flavors with a 40G disk, thus we make it
 slightly bigger examples online will work. After the installation a controller
 uses about 7G and a compute node uses about 4G.
@@ -697,8 +697,8 @@ secured.
 ### Undercloud works
 
 If this completes ok, we should be able to inspect the state of the undercloud.
-First we source the stackrc file which containts the authentication information
-for openstack, this sets environment variables that the openstack programs use.
+First we source the stackrc file which contains the authentication information
+for OpenStack, this sets environment variables that the OpenStack programs use.
 Then we can list the services that are running. Note the lack of horizion and
 other high level components.
 
@@ -1148,7 +1148,7 @@ about about our nodes:
 [stack@undercloud01 ~]$
 ```
 
-Next we well openstack that we want to configure these machines to boot. I think
+Next we well OpenStack that we want to configure these machines to boot. I think
 this sets there boot image to the bare metal hardware discovery image.
 
 ```
@@ -1219,10 +1219,10 @@ We can also inspect further information about the nodes:
 
 The next step to match the real world is for ironic to boot each machine with a
 special image that reports back the hardware specs of each node. It collects the
-RAM, disk, CPU and probably more. It cna be configured to collect extra
+RAM, disk, CPU and probably more. It can be configured to collect extra
 information. This would match the real life example where you have a bunch of
 hardware and the nodes with extra ram are for Nova or the node with extra NICS
-are for dedicated Neutron. Lated on we define the link between the hardware
+are for dedicated Neutron. Lastly on we define the link between the hardware
 specs, the flavours that may match the hardware and the links between the
 compute flavor and the compute install.
 
@@ -1244,7 +1244,7 @@ calls introspection.
 ```
 
 If everything has working we can see that it's turned on one node. We can even
-look at that virtual machines console to see whats going on. When that machine
+look at that virtual machines console to see what's going on. When that machine
 has successfully booted and introspected itself and reported back it shuts down.
 We can see all this in the below repeated commands.
 
@@ -1346,7 +1346,7 @@ Feb 22 14:24:25 undercloud01 ironic-inspector[25852]: Look up error: Could not f
 ### Inspection issues on Centos
 
 When I ran the installation the overcloud virtual machines pxe booted fine.
-However when I re-ran the installation on faster hardware runing CentOS7 I had
+However when I re-ran the installation on faster hardware running CentOS7 I had
 issues with the hosts not booting or booting with and having issues with MAC
 address detection. Fortunately this seems to be a known bug. I can only a assume
 it's related to the ipxe package in CentOS7. There is a work around that
@@ -2648,7 +2648,7 @@ Added interface 1271b2c0-b231-4da7-9e88-9ed3ac1f4215 to router router.
 ### Create security groups
 
 Next are the security group rules. You can create multiple different security
-groups acording to function. However for speed we just want to modify the
+groups according to function. However for speed we just want to modify the
 default group. We want to allow all ICMP and SSH traffic.
 
 ```

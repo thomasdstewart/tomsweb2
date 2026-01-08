@@ -449,7 +449,7 @@ r=/srv/store/thomas/rubus; dev=/dev/sde; sudo umount $dev*; sudo mount ${dev}2 /
 
 ### Create SD card images
 
-I didn't need this in the end, but it may prove usefull. This is a way to create
+I didn't need this in the end, but it may prove useful. This is a way to create
 sd card images (Hands up if you can spot a x8 optimization speed up somewhere).
 
 ```
@@ -1046,7 +1046,7 @@ openstack flavor create --ram 256 --disk 30 --ephemeral 0 --vcpus 1 --public m1.
 
 ### init thomas project (as thomas)
 
-create private network, router, update security group, install key and grap
+create private network, router, update security group, install key and grep
 floating ip
 
 ```

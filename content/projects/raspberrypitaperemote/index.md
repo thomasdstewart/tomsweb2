@@ -211,7 +211,7 @@ low. After this initialisation relay 1 can be turned back on again. I don't
 think this was strictly necessary however it does all a little protection and
 given that there are 2 spare relays, this gives a use for one of them.
 
-| GPIO Pin | Fucntion | Default Rasbian boot Voltage | Relay Pin    |
+| GPIO Pin | Function | Default Rasbian boot Voltage | Relay Pin    |
 | -------- | -------- | ---------------------------- | ------------ |
 | 1        | 3.3      | 3v                           |              |
 | 2        | 5v       | 5v                           | relay vcc    |

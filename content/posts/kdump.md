@@ -161,7 +161,7 @@ LOAD AVERAGE: 0.45, 0.36, 0.14
 crash>
 ```
 
-I then rebooted to my unreliable kernel to get a dump of my issue. Sure enought
+I then rebooted to my unreliable kernel to get a dump of my issue. Sure enough
 the system crashed and I got a dump! (Please note that the crash tool can be
 funny about the version of Linux running, you may need to update it if it's old
 and looking at a new kernel with a greater major version that it's aware of, see

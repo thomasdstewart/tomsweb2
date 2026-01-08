@@ -1806,7 +1806,7 @@ su: Authentication failure
 thomas@diamond:~$
 ```
 
-## Get Compilin
+## Get Compiling
 
 Get the latest linux source from git:
 
@@ -2593,7 +2593,7 @@ Marvell>>
 ```
 
 Setup env for booting manually, set server ip, reset the ide, copy images to
-ram, set some paramaters for the kernel:
+ram, set some parameters for the kernel:
 
 ```
 Marvell>> setenv serverip 192.168.1.252
@@ -3040,7 +3040,7 @@ After which the sharespace returns with:
 /mnt/root #
 ```
 
-Copy kernel dev fom build pc to sharespace via netcat:
+Copy kernel dev from build pc to sharespace via netcat:
 
 ```
 /mnt/root # nc -l -p 9999 > linux-image-3.10.0+-orion5x_1.sharespace_armel.deb

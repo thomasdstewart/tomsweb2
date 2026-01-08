@@ -15,7 +15,7 @@ However it would be nice to know that data is encrypted when stored on disk.
 This does not mitigate against a very bad cloud provider, as ultimately if they
 are determined enough they can get at the data. However implementing some sort
 of encryption does offer some protection against reading the data if disks are
-re-used and certainly makes the barrier much higher for access casually.
+reused and certainly makes the barrier much higher for access casually.
 
 ## Ideas
 
@@ -61,7 +61,7 @@ caught my attention because:
 
 The project (https://github.com/latchset) have borrowed the nomenclature of the
 Clevis fastener system (https://en.wikipedia.org/wiki/Clevis_fastener) and
-re-use the same terminology: clevis, tang, pin. It's cute and clever but also
+reuse the same terminology: clevis, tang, pin. It's cute and clever but also
 confusing. Basically you have a tang server somewhere and clevis uses the tang
 pin to connect to the tang server over a network to calculate a key that can
 unlock the disk. Also Clevis can run from initramfs with network support to
