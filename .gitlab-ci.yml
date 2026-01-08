@@ -35,7 +35,7 @@ sync-repo:
   cache:
     key: tomsweb2
     paths:
-      - tomeweb2.git
+      - tomsweb2.git
 
 generate:
   stage: test
