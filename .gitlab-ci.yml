@@ -67,4 +67,4 @@ awssync:
     - cat ~/.aws/config
   script:
     - aws --profile devops s3 sync public/. s3://$AWS_S3_BUCKET_NAME/
-    - aws --profile devops cloudfront create-invalidation --distribution-id=$AWS_CLOUDFRONT_DISTRIBUTION_ID --paths /*
+    - aws --profile devops cloudfront create-invalidation --distribution-id=$AWS_CLOUDFRONT_DISTRIBUTION_ID --paths '/*'
