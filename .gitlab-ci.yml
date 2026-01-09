@@ -17,10 +17,13 @@ build:
     - echo -e "[profile devops]\nrole_arn=${ROLE_ARN}\nweb_identity_token_file=/tmp/web_identity_token" > ~/.aws/config
   script:
     - git remote add github git@github.com:thomasdstewart/tomsweb2.git
+    - pwd
+    - ls -la
+    - ls -la .git
+    - git remote -v
     - git push github main
     - v=$(curl -s https://raw.githubusercontent.com/nunocoracao/blowfish/refs/heads/main/config.toml | awk '/max/{print $3}' | xargs);
     - curl -vL https://github.com/gohugoio/hugo/releases/download/v${v}/hugo_${v}_linux-amd64.tar.gz | tar --extract --verbose --gzip --file - --directory /usr/local/bin hugo
-    - pwd ls -la
     - hugo version
     - hugo mod graph
     - hugo --logLevel debug --minify
