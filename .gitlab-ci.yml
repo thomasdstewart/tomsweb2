@@ -6,17 +6,15 @@ build:
       aud: sts.amazonaws.com
   before_script:
     - apk add --no-cache aws-cli curl go git openssh 
+    - mkdir -p  ~/.aws ~/.ssh 
     - eval $(ssh-agent -s)
     - echo "$SSH_PRIVATE_KEY" | base64 -d | ssh-add -
-    - ssh-add -l
-    - mkdir -p ~/.ssh
-    - ssh-keyscan github.com gitlab.com >> ~/.ssh/known_hosts
-    - mkdir -p ~/.aws
+    - ssh-keyscan github.com >> ~/.ssh/known_hosts
     - echo "${AWS_OIDC_TOKEN}" > /tmp/web_identity_token
     - echo -e "[profile devops]\nrole_arn=${ROLE_ARN}\nweb_identity_token_file=/tmp/web_identity_token" > ~/.aws/config
   script:
-    - test ! -d tomsweb2.git && git clone --mirror git@gitlab.com:thomasdstewart/tomsweb2.git
-    - cd tomsweb2.git && git fetch --all --prune && git push --mirror --prune git@github.com:thomasdstewart/tomsweb2.git
+    - git remote add github git@github.com:thomasdstewart/tomsweb2.git
+    - git push github main
     - v=$(curl -s https://raw.githubusercontent.com/nunocoracao/blowfish/refs/heads/main/config.toml | awk '/max/{print $3}' | xargs);
     - curl -vL https://github.com/gohugoio/hugo/releases/download/v${v}/hugo_${v}_linux-amd64.tar.gz | tar --extract --verbose --gzip --file - --directory /usr/local/bin hugo
     - pwd ls -la
