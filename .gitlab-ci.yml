@@ -1,8 +1,3 @@
-#stages:
-#- test
-#- build
-#- deploy
-
 build:
   stage: build
   image: docker.io/alpine:latest
@@ -22,7 +17,8 @@ build:
   script:
     - test ! -d tomsweb2.git && git clone --mirror git@gitlab.com:thomasdstewart/tomsweb2.git
     - cd tomsweb2.git && git fetch --all --prune && git push --mirror --prune git@github.com:thomasdstewart/tomsweb2.git
-    - v=$(curl -s https://raw.githubusercontent.com/nunocoracao/blowfish/refs/heads/main/config.toml | awk '/max/{print $3}' | xargs); curl -vL https://github.com/gohugoio/hugo/releases/download/v$v/hugo_extended_$v_linux-amd64.tar.gz | tar --extract --verbose --gzip --file - --directory /usr/local/bin hugo
+    - v=$(curl -s https://raw.githubusercontent.com/nunocoracao/blowfish/refs/heads/main/config.toml | awk '/max/{print $3}' | xargs); curl -vL https://github.com/gohugoio/hugo/releases/download/v${v}/hugo_${v}_linux-amd64.tar.gz | tar --extract --verbose --gzip --file - --directory /usr/local/bin hugo
+    - echo $v
     - hugo version
     - hugo mod graph
     - hugo --logLevel debug --minify
