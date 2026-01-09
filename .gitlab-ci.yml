@@ -1,3 +1,6 @@
+variables:
+  GIT_STRATEGY: "clone"
+
 build:
   stage: build
   image: docker.io/alpine:latest
