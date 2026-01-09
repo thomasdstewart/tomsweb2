@@ -21,7 +21,7 @@ build:
     - ls -la
     - ls -la .git
     - git remote -v
-    - git push github main
+    - git push github HEAD:main
     - v=$(curl -s https://raw.githubusercontent.com/nunocoracao/blowfish/refs/heads/main/config.toml | awk '/max/{print $3}' | xargs);
     - curl -vL https://github.com/gohugoio/hugo/releases/download/v${v}/hugo_${v}_linux-amd64.tar.gz | tar --extract --verbose --gzip --file - --directory /usr/local/bin hugo
     - hugo version
