@@ -439,14 +439,14 @@ $
 I created the 3 virtual machines that will become the overcloud, which will form
 the real usable OpenStack installation with all the normal OpenStack components.
 The undercloud01 virtual machine will manage these networks. I need to create
-the virtual machines in libvirt which required both the virtual machine and it's
-a associated disk. Again virt-install is used, however it it given the -
--dry-run option to output an xml definition of the virtual machine that can be
+the virtual machines in libvirt which required both the virtual machine and its
+associated disk. Again virt-install is used, however it is given the -
+-dry-run option to output an XML definition of the virtual machine that can be
 fed into virsh. This way I ended up with 3 virtual machines ready to run. Again
 60G disks are used, however not all that space is needed. By default we create
-the ironic nova flavors however in later versions of OpenStack these are created
-for us. Also man examples online use flavors with a 40G disk, thus we make it
-slightly bigger examples online will work. After the installation a controller
+the ironic nova flavors, however in later versions of OpenStack these are created
+for us. Also many examples online use flavors with a 40G disk, thus we make it
+slightly bigger so examples online will work. After the installation a controller
 uses about 7G and a compute node uses about 4G.
 
 I created the machines with a small for loop:
@@ -1132,8 +1132,8 @@ node-list, not surprisingly there are node listed:
 [stack@undercloud01 ~]$
 ```
 
-We then import the json file and we find that the "ironic node-list" now shows
-about about our nodes:
+We then import the JSON file and we find that the "ironic node-list" now shows
+details about our nodes:
 
 ```
 [stack@undercloud01 ~]$ openstack baremetal import --json instackenv.json
@@ -1989,12 +1989,12 @@ either ERROR or COMPLETE. It looks like:
 [stack@undercloud01 ~]$
 ```
 
-If you want to see more progress the "heat resource-list -n 5 overcloud" will
-show what it's going however, it it goes wrong the command "heat resource-list
--n 5 overcloud | grep -i fail" will help, also see
+If you want to see more progress, the "heat resource-list -n 5 overcloud" will
+show how it's going; however, if it goes wrong, the command "heat resource-list
+-n 5 overcloud | grep -i fail" will help; also see
 http://docs.openstack.org/developer/tripleo-docs/troubleshooting/troubleshooting-overcloud.html.
 Also "heat stack-delete overcloud" will do a good job cleaning everything up to
-start afresh. However if it all goes well you should see the nova on the
+start afresh. However, if it all goes well you should see the nova on the
 Undercloud start to spawn instances. This can be seen with a simple "nova list",
 sample output below.
 

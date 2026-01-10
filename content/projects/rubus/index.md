@@ -547,12 +547,12 @@ the below hack:
 sed -i 's/^nameserver.*/nameserver 8.8.8.8/' /etc/resolv.conf
 ```
 
-The the better solution would be to install resolvconf and add "dns-nameservers
+The better solution would be to install resolvconf and add "dns-nameservers
 8.8.8.8" to all the network stanzas.
 
 ### Add Swap
 
-We need to suppliant memory with a little swap...
+We need to supplement memory with a little swap...
 
 ```
 dd if=/dev/zero of=/var/cache/swap bs=1M count=1024

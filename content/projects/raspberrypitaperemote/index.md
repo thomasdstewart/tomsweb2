@@ -177,35 +177,35 @@ have defaults, some are set to IN and some are set to OUT. I found that reading
 the information too tricky so instead I took a Pi and booted the latest Raspbian.
 I then measured the voltage of each of the GPIO pins to find out what the
 default was. I wanted to pick GPIO pins that by default were set low (ie 0v).
-That way then the Pi was turned on it would not activate any relays. Below is a
+That way when the Pi was turned on it would not activate any relays. Below is a
 table of my findings. There are 10 Pins that default to 0v. Some of the GPIO
 pins also have dual functions (SPI) and I didn't want to clash with these
-functions. So I picked the 7 gpio pins that were low and one that was high. My
-plan was the wire the relay in such a way that as soon as it gets power from the
+functions. So I picked the 7 GPIO pins that were low and one that was high. My
+plan was to wire the relay in such a way that as soon as it gets power from the
 Pi the default high on one GPIO cuts the signal for all the tape functions.
 
 ## Relay
 
 I now had a Raspberry Pi that could control 8 GPIO pins. Given that I have 6
-functions, I needed at least 6 relays on a relay board. It seems 4 or 8 seems to
-be a common number. I got an 8 channel relay board. There seem to be quite a few
-different types out there for the maker type market, but they all seems to use
+functions, I needed at least 6 relays on a relay board. It seems 4 or 8 is a
+common number. I got an 8 channel relay board. There seem to be quite a few
+different types out there for the maker type market, but they all seem to use
 the same board design. I think I got something similar to:
 http://www.sunfounder.com/8-channel-5v-relay-shield-module.html.
 
-Initially I wired the Pi to the relay board with wires and a bread board. I then
+Initially I wired the Pi to the relay board with wires and a breadboard. I then
 experimented with the setup. The relay board I got has little LEDs on to
 indicate a relay being on or off. This was very visual and enabled me to get the
 wiring just right before connecting the tape recorder. Once the wiring was
-finalised I swapped the wires for a single single ribbon cable from the relay
+finalised I swapped the wires for a single ribbon cable from the relay
 board to the Pi.
 
-Each relay has common, a normally closed and a normally open. I connected the
-GND of the tape player to to relay 1. I then connected the normally open pin to
-common on relay 2 to 8. Thus relays 2-8 can have there input high or low or do
-anything but because the common is disconnected until relay 1 is turned on. Thus
+Each relay has a common, a normally closed, and a normally open. I connected the
+GND of the tape player to relay 1. I then connected the normally open pin to
+common on relay 2 to 8. Thus relays 2-8 can have their input high or low or do
+anything, but because the common is disconnected until relay 1 is turned on. Thus
 when the Pi boots, relay 1 activates, but because all the GPIO ports default to
-0v none of the relays activate. Once the Raspberry PI has booted, relay 1 can be
+0v none of the relays activate. Once the Raspberry Pi has booted, relay 1 can be
 turned off, this allows the setting of all the other GPIO ports to be output and
 low. After this initialisation relay 1 can be turned back on again. I don't
 think this was strictly necessary however it does all a little protection and
@@ -266,10 +266,10 @@ Here are a list of pages that talk more about the Raspberry Pi's GPIO interface:
 
 ## Quick and dirty software
 
-Now that I had a Tape player connected to the relay board and the relay board
-connected to the Raspberry Pi I needed some way to control it remotely. My
-Raspberry Pi already had a USB Wifi dongle. I purchased a
-[Flirc USB](https://flirc.tv/more/flirc-usb), trained with with my amplifier
+Now that I had a tape player connected to the relay board and the relay board
+connected to the Raspberry Pi, I needed some way to control it remotely. My
+Raspberry Pi already had a USB Wi-Fi dongle. I purchased a
+[Flirc USB](https://flirc.tv/more/flirc-usb), trained with my amplifier
 remote and connected it to the Raspberry Pi. Thus in theory I could use the
 remote control to control the tape player.
 

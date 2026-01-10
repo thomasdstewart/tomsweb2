@@ -4750,7 +4750,7 @@ Entry Point:  00000000
 root@sharespace:~#
 ```
 
-Backup the mtd devices, this we can can allays return to the original firmware.
+Backup the mtd devices, so we can always return to the original firmware.
 
 ```
 root@sharespace:~# for n in `seq 0 4`; do dd bs=1M if=/dev/mtdblock$n of=mtdblock$n; done
