@@ -25,4 +25,7 @@ jobs:
           mkdir -p ~/.ssh
           ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
           git remote add github git@gitlab.com:thomasdstewart/tomsweb2.git
+          echo "git pull"
+          git pull
+          echo "git push"
           git push github HEAD:main
