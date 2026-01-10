@@ -4,7 +4,7 @@ summary: ""
 authors: ["thomas"]
 tags: ["book", "other"]
 categories: []
-date: 2024-10-08
+date: 2026-01-10
 aliases: [/tomsweb/BookList/]
 ---
 
