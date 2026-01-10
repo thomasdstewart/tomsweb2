@@ -5,7 +5,7 @@ Personal site built with [Hugo](https://gohugo.io/) using the [Blowfish](https:/
 ## Tech stack
 - **Static site generator:** Hugo
 - **Theme:** Blowfish (v2)
-- **CICD:** GutLab
+- **CICD:** GitLab
 
 ## Local development
 
