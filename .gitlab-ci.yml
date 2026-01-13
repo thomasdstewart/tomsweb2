@@ -19,8 +19,6 @@ build:
     - curl -L https://github.com/gohugoio/hugo/releases/download/v${hugo_version}/hugo_extended_withdeploy_${hugo_version}_linux-amd64.tar.gz | tar xvzf - -C /bin hugo
     - hugo --logLevel debug --minify
     - hugo --logLevel debug deploy --invalidateCDN --maxDeletes -1
-    #- aws --profile devops s3 --delete sync public/. s3://$AWS_S3_BUCKET_NAME/
-    #- aws --profile devops cloudfront create-invalidation --distribution-id=$AWS_CLOUDFRONT_DISTRIBUTION_ID --paths '/*'
   cache:
     key: resources
     paths:
