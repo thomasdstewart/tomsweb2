@@ -40,7 +40,7 @@ deploy:
     - mkdir resources
     - cp -a /builds/thomasdstewart/tomsweb2/resources/* resources/
     - hugo --logLevel debug --minify
-    - cp -a resource/* /builds/thomasdstewart/tomsweb2/resources/
+    - cp -a resources/* /builds/thomasdstewart/tomsweb2/resources/
     - aws --profile devops s3 --delete sync public/. s3://$AWS_S3_BUCKET_NAME/
     - aws --profile devops cloudfront create-invalidation --distribution-id=$AWS_CLOUDFRONT_DISTRIBUTION_ID --paths '/*'
   cache:
