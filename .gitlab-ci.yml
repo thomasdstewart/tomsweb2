@@ -16,7 +16,6 @@ docker-build:
 
 deploy:
   stage: deploy
-  needs: ["docker-build"]
   image: $CI_REGISTRY_IMAGE:latest
   id_tokens:
     AWS_OIDC_TOKEN:
