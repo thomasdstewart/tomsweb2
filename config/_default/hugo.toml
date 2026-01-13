@@ -66,3 +66,9 @@ googleAnalytics = "G-RF2RK96VQY"
       name = 'fragmentrefs'
       type = 'fragments'
       weight = 10
+
+[deployment]
+  [[deployment.targets]]
+    name = 'production'
+    url = 's3://tomsweb2-uwunuithaesa?region=us-east-1'
+    cloudFrontDistributionID = 'E35C0X8QHTQ24L'

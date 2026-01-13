@@ -16,10 +16,11 @@ build:
     - git push github HEAD:main
     - blowfish_version=$(awk '/blowfish/{print $3}' go.mod)
     - hugo_version=$(curl -s https://raw.githubusercontent.com/nunocoracao/blowfish/refs/tags/${blowfish_version}/config.toml | awk '/max/{print $3}' | xargs)
-    - curl -L https://github.com/gohugoio/hugo/releases/download/v${hugo_version}/hugo_${hugo_version}_linux-amd64.tar.gz | tar xvzf - -C /usr/local/bin hugo
+    - curl -L https://github.com/gohugoio/hugo/releases/download/v${hugo_version}/hugo_extended_withdeploy_${hugo_version}_linux-amd64.tar.gz | tar xvzf - -C /usr/local/bin hugo
     - hugo --logLevel debug --minify
-    - aws --profile devops s3 --delete sync public/. s3://$AWS_S3_BUCKET_NAME/
-    - aws --profile devops cloudfront create-invalidation --distribution-id=$AWS_CLOUDFRONT_DISTRIBUTION_ID --paths '/*'
+    - hugo --logLevel debug deploy --invalidateCDN --maxDeletes -1
+    #- aws --profile devops s3 --delete sync public/. s3://$AWS_S3_BUCKET_NAME/
+    #- aws --profile devops cloudfront create-invalidation --distribution-id=$AWS_CLOUDFRONT_DISTRIBUTION_ID --paths '/*'
   cache:
     key: resources
     paths:
