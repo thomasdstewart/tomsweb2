@@ -186,6 +186,13 @@ Earlier
 - The Two Towers (The Lord of the Rings book 2) - J.R.R. Tolkien (9780345339713)
 - The Return of the King (The Lord of the Rings book 3) - J.R.R. Tolkien
   (9780547952048)
+- Harry Potter and the Philosopher's Stone - J. K. Rowling
+- Harry Potter and the Chamber of Secrets - J. K. Rowling
+- Harry Potter and the Prisoner of Azkaban - J. K. Rowling
+- Harry Potter and the Goblet of Fire - J. K. Rowling
+- Harry Potter and the Order of the Phoenix - J. K. Rowling
+- Harry Potter and the Half-Blood Prince - J. K. Rowling
+- Harry Potter and the Deathly Hallows J. K. Rowling
 
 
 ## Reading Preferences Summary (Genres & Themes)
