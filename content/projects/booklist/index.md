@@ -193,6 +193,8 @@ Earlier
 - Harry Potter and the Order of the Phoenix - J. K. Rowling
 - Harry Potter and the Half-Blood Prince - J. K. Rowling
 - Harry Potter and the Deathly Hallows J. K. Rowling
+- Birds' Nest Soup - Hanna Greally (9780900372391)
+- The Da Vinci Code - Dan Brown (9780307277671)
 
 
 ## Reading Preferences Summary (Genres & Themes)
