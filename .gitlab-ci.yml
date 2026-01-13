@@ -33,12 +33,13 @@ deploy:
     - echo "$SSH_PRIVATE_KEY" | base64 -d | ssh-add -
     - echo "${AWS_OIDC_TOKEN}" > /tmp/web_identity_token
     - echo -e "[profile devops]\nrole_arn=${ROLE_ARN}\nweb_identity_token_file=/tmp/web_identity_token" > ~/.aws/config
-    - pwd
-    - ls -la
+    - mv /builds/thomasdstewart/tomsweb2/resources resources
+    - cd ~/tomsweb2
     - git pull
     - git remote add github git@github.com:thomasdstewart/tomsweb2.git
     - git push github HEAD:main
     - hugo --logLevel debug --minify
+    - mv resources /builds/thomasdstewart/tomsweb2/resources
     - aws --profile devops s3 --delete sync public/. s3://$AWS_S3_BUCKET_NAME/
     - aws --profile devops cloudfront create-invalidation --distribution-id=$AWS_CLOUDFRONT_DISTRIBUTION_ID --paths '/*'
   cache:
