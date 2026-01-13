@@ -34,8 +34,8 @@ deploy:
     - echo "${AWS_OIDC_TOKEN}" > /tmp/web_identity_token
     - echo -e "[profile devops]\nrole_arn=${ROLE_ARN}\nweb_identity_token_file=/tmp/web_identity_token" > ~/.aws/config
     - pwd
-    - git pull
     - ls -la
+    - git pull
     - git remote add github git@github.com:thomasdstewart/tomsweb2.git
     - git push github HEAD:main
     - hugo --logLevel debug --minify
