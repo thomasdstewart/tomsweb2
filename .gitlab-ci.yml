@@ -11,7 +11,7 @@ build:
     - echo "$SSH_PRIVATE_KEY" | base64 -d | ssh-add -
     - ssh-keyscan github.com >> ~/.ssh/known_hosts
     - echo "${AWS_OIDC_TOKEN}" > /tmp/web_identity_token
-    - echo -e "[profile devops]\nrole_arn=${ROLE_ARN}\nweb_identity_token_file=/tmp/web_identity_token" > ~/.aws/config
+    - echo -e "[default]\nrole_arn=${ROLE_ARN}\nweb_identity_token_file=/tmp/web_identity_token" > ~/.aws/config
     - git remote add github git@github.com:thomasdstewart/tomsweb2.git
     - git push github HEAD:main
     - blowfish_version=$(awk '/blowfish/{print $3}' go.mod)
