@@ -48,6 +48,7 @@ deploy:
     paths:
       - resources
 
+
 #build:
 #  stage: build
 #  image: docker.io/alpine:latest
