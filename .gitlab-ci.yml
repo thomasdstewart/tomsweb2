@@ -37,13 +37,16 @@ deploy:
     - git pull
     - git remote add github git@github.com:thomasdstewart/tomsweb2.git
     - git push github HEAD:main
+    - mkdir resources
+    - cp -a /builds/thomasdstewart/tomsweb2/resources/* resources/
     - hugo --logLevel debug --minify
+    - cp -a resource/* /builds/thomasdstewart/tomsweb2/resources/
     - aws --profile devops s3 --delete sync public/. s3://$AWS_S3_BUCKET_NAME/
     - aws --profile devops cloudfront create-invalidation --distribution-id=$AWS_CLOUDFRONT_DISTRIBUTION_ID --paths '/*'
   cache:
     key: resources
     paths:
-      - ../../../root/tomsweb2/resources
+      - resources
 
 #build:
 #  stage: build
