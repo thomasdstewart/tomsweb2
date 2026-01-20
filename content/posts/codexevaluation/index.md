@@ -6,19 +6,47 @@ tags: ["ai", "llm", "chatgpt", "python"]
 categories: []
 date: 2026-01-20 04:05:00
 ---
-Recently I've wanted to understand more about using AI/LLM technologies to assist with code creation. I have in the past played with using chatbot style vibe coding. This is where one describes what is desired and the LLM produces an entire program. However I have found that subsequent iterations with further features hard to keep copy and pasting the entire source file, assuming a single source file is required, to be difficult. I have not really tried with in editor coding. However for the most part the "help me write this one function" to be smaller picture that I desired. So when I found out about Codex from ChatGPT I was really excited to understand how this works. For me it's the integration with GitHub that make's it really useful. In stead of having to write an ever larger perfect prompt that covers the entire aspect of the functionality, one builds up functionality one GitHub pull request at a time. I liked this concept because it's also how I develop things, eg I start small with basic functionality and then iterate. Given that each unit of work is a pull request I can inspect each change to the code base's multiple files to see if it's making the desired changes.
+Recently I've wanted to understand more about using AI/LLM technologies to 
+assist with code creation. I have in the past played with using chatbot style 
+vibe coding. This is where one describes what is desired and the LLM produces 
+an entire program. However I have found that subsequent iterations with further 
+features hard to keep copy and pasting the entire source file, assuming a 
+single source file is required, to be difficult. I have not really tried with 
+in editor coding. However for the most part the "help me write this one 
+function" to be smaller picture that I desired. So when I found out about Codex 
+from ChatGPT I was really excited to understand how this works. For me it's the 
+integration with GitHub that make's it really useful. In stead of having to 
+write an ever larger perfect prompt that covers the entire aspect of the 
+functionality, one builds up functionality one GitHub pull request at a time. I 
+liked this concept because it's also how I develop things, eg I start small 
+with basic functionality and then iterate. Given that each unit of work is a 
+pull request I can inspect each change to the code base's multiple files to see 
+if it's making the desired changes.
 
-I'm a real believer in scratching ones own itch to really understand a thing, so I decided to try to fully implement a tool I've wanted for a while by using Codex. I've wanted something to check Ryanair prices and track them over time for sometime. What follows is a summary of this whole process.
+I'm a real believer in scratching ones own itch to really understand a thing, 
+so I decided to try to fully implement a tool I've wanted for a while by using 
+Codex. I've wanted something to check Ryanair prices and track them over time 
+for sometime. What follows is a summary of this whole process.
 
-To skip straight to the code have a look on GitHub: https://github.com/thomasdstewart/ryantrak/ or to look at the output have a look on the GitHub pages site: https://thomasdstewart.github.io/ryantrak/
+To skip straight to the code have a look on GitHub: 
+https://github.com/thomasdstewart/ryantrak/ or to look at the output have a 
+look on the GitHub pages site: https://thomasdstewart.github.io/ryantrak/
 
 The Codex web user interfaces looks like this: ![Code Web UI](codex.webp)
 
-In addition each pull request also has additional details generated for me. I have also given Codex a "Custom instruction" of "Commit messages should follow conventional commit format." So a pull requests end up looking like this: ![GitHub](github.webp)
+In addition each pull request also has additional details generated for me. I 
+have also given Codex a "Custom instruction" of "Commit messages should follow 
+conventional commit format." So a pull requests end up looking like this: 
+![GitHub](github.webp)
 
-Overall I wrote about 100 sentences over 1,100 words of prompt text, which is about two sides of A4 with size 12 font.
+Overall I wrote about 100 sentences over 1,100 words of prompt text, which is 
+about two sides of A4 with size 12 font.
 
-Each section header below is the ChatGPT summary of my prompt and below each prompt is my actual prompt, the summary ChatGPT has provided describing what it's done and then a link to the GitHub pull request. This shows the entire tool's creation from an empty repo through the 42 prompts I provided to what I'm calling version 1.0.
+Each section header below is the ChatGPT summary of my prompt and below each 
+prompt is my actual prompt, the summary ChatGPT has provided describing what 
+it's done and then a link to the GitHub pull request. This shows the entire 
+tool's creation from an empty repo through the 42 prompts I provided to what 
+I'm calling version 1.0.
 
 ## Implement Ryanair flight checker tool
 > I want to write a tool that can continuously check ryanair flights every day and graph the result over time. I want to use Python. I want to use Selenium. Initially to keep tings simple lets start with  London Stansted to Milan Bergamo Return 22 Aug - 4 Sept 1. My idea is that a single program run can run in a GitHub action, perform the search and record the results. I think initially just keeping the results in a csv file. Can you sketch out most of an implementation. Include updating the readme, the scraper file, the git hub actions, given it's  Selenium there will have to be a fair amount of logging and debugging.
