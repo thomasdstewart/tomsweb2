@@ -16,6 +16,8 @@ The Codex web user interfaces looks like this: ![Code Web UI](codex.webp)
 
 In addition each pull request also has additional details generated for me. I have also given Codex a "Custom instruction" of "Commit messages should follow conventional commit format." So a pull requests end up looking like this: ![GitHub](github.webp)
 
+Overall I wrote about 100 sentences over 1,100 words of prompt text, which is about two sides of A4 with size 12 font.
+
 Each section header below is the ChatGPT summary of my prompt and below each prompt is my actual prompt, the summary ChatGPT has provided describing what it's done and then a link to the GitHub pull request. This shows the entire tool's creation from an empty repo through the 42 prompts I provided to what I'm calling version 1.0.
 
 ## Implement Ryanair flight checker tool
