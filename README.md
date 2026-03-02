@@ -24,3 +24,13 @@ Then open http://localhost:1313
 - `assets/` — Source assets processed by Hugo
 - `static/` — Files copied directly to the output
 - `terraform/` — Infrastructure as code for site
+
+## Pull request validation workflow
+
+GitHub PRs to `main` run a Hugo validation workflow that:
+
+- Builds the site with Hugo using CI settings.
+- Uploads the generated `public/` directory as an artifact (`hugo-public`).
+- Renders a local preview and uploads screenshots as an artifact (`hugo-preview-screenshots`).
+
+This keeps CI lightweight while still giving a quick visual check for theme/dependency updates before merge and GitLab deployment.
