@@ -12,6 +12,7 @@ Books I've read per year. Title - Author (ISBN) (https://isbnsearch.org/)
 
 2026
 
+- Mistborn: The Final Empire - Brandon Sanderson (9780765311788)
 - Fahrenheit 451 - Ray Bradbury (9780743247221)
 
 2025 (5)
