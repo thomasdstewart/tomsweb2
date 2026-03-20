@@ -1,6 +1,6 @@
 module "iam_github_oidc_role_devops" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role"
-  version = "6.2.3"
+  version = "6.4.0"
 
   use_name_prefix = false
   name            = "devops"
