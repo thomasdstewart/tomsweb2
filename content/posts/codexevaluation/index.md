@@ -6,27 +6,28 @@ tags: ["ai", "llm", "chatgpt", "python"]
 categories: []
 date: 2026-01-20 04:05:00
 ---
-Recently I've wanted to understand more about using AI/LLM technologies to 
-assist with code creation. I have in the past played with using chatbot style 
-vibe coding. This is where one describes what is desired and the LLM produces 
-an entire program. However I have found that subsequent iterations with further 
-features hard to keep copy and pasting the entire source file, assuming a 
-single source file is required, to be difficult. I have not really tried with 
-in editor coding. However for the most part the "help me write this one 
-function" to be smaller picture that I desired. So when I found out about Codex 
-from ChatGPT I was really excited to understand how this works. For me it's the 
-integration with GitHub that make's it really useful. In stead of having to 
-write an ever larger perfect prompt that covers the entire aspect of the 
-functionality, one builds up functionality one GitHub pull request at a time. I 
-liked this concept because it's also how I develop things, eg I start small 
-with basic functionality and then iterate. Given that each unit of work is a 
-pull request I can inspect each change to the code base's multiple files to see 
-if it's making the desired changes.
+Recently I've wanted to understand more about using AI/LLM technologies to
+assist with code creation. I have in the past played with using chatbot style
+vibe coding. This is where one describes what is desired and the LLM produces
+an entire program. However I have found that subsequent iterations with further
+features hard to keep copy and pasting the entire source file, assuming a
+single source file is required, to be difficult and annoying. I have not really
+tried with in editor coding. However for the most part the "help me write this
+one function" to be smaller picture that I desired, eg I see the power of this
+being able to modify multiple files at once and update documentation all at the
+same time. So when I found out about Codex from ChatGPT I was really excited to
+understand how this works. For me it's the integration with GitHub that make's
+it really useful. Instead of having to write an ever larger perfect prompt
+that covers the entire aspect of the functionality, one builds up functionality
+one GitHub pull request at a time. I liked this concept because it's also how I
+develop things, eg I start small with basic functionality and then iterate.
+Given that each unit of work is a pull request it means I can inspect each
+change to the code base to see if it's making the desired changes or not.
 
-I'm a real believer in scratching ones own itch to really understand a thing, 
-so I decided to try to fully implement a tool I've wanted for a while by using 
-Codex. I've wanted something to check Ryanair prices and track them over time 
-for sometime. What follows is a summary of this whole process.
+I'm a real believer in scratching ones own itch to really understand a thing,
+so I decided to try to fully implement a tool I've wanted for a while by using
+Codex. I've wanted something to check Ryanair prices and track them over time.
+What follows is a summary of this whole process.
 
 To skip straight to the code have a look on GitHub: 
 https://github.com/thomasdstewart/ryantrak/ or to look at the output have a 
