@@ -1,4 +1,5 @@
 version: STSv1
 mode: testing 
 mx: smtp.stewarts.org.uk
+mx: onyx.stewarts.org.uk
 max_age: 86400
