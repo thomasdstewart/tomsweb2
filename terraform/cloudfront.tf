@@ -1,6 +1,6 @@
 module "cloudfront" {
   source  = "terraform-aws-modules/cloudfront/aws"
-  version = "6.4.1"
+  version = "6.5.0"
 
   aliases = [
     "stewarts.org.uk",
