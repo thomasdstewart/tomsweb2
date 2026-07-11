@@ -4,7 +4,7 @@ summary: ""
 authors: ["thomas"]
 tags: ["book", "other"]
 categories: []
-date: 2026-01-10
+date: 2026-07-11
 aliases: [/tomsweb/BookList/]
 ---
 
@@ -12,6 +12,8 @@ Books I've read per year. Title - Author (ISBN) (https://isbnsearch.org/)
 
 2026
 
+- Mistborn: The Well of Ascension - Brandon Sanderson (9780575097759)
+- A Grief Observed - C.S. Lewis (9780571310883)
 - Mistborn: The Final Empire - Brandon Sanderson (9780765311788)
 - Fahrenheit 451 - Ray Bradbury (9780743247221)
 
