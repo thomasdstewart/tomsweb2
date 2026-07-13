@@ -33,3 +33,23 @@ Pimoroni
  * 8 Pin JST-SH Cable (SP/CE) JST-SH to DuPont sockets £1.50
  * LTE 4G Antenna × 1 Medium Stick (108mm) £4.00
  * LTE 4G Antenna × 1 Right Angle SMA Extension Cable (150mm) £3.25
+
+
+## Provisoning
+Put jumper on ee disable boot jumper
+Connect usb3 cable from host to pi
+run rpiboot from https://github.com/raspberrypi/usbboot.git
+write image 2026-06-18-raspios-trixie-arm64-lite.img
+
+Boot, get keyboard, add user thomas
+login
+sudo raspi-config, System Option -> Wirelwess LAN
+
+
+hostnamectl set-hostname piloggercol01.unix.phe.gov.uk
+
+systemctl enable ssh; systemctl start ssh
+thomas@192.168.7.154
+
+
+
