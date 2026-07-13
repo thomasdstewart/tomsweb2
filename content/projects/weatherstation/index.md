@@ -53,3 +53,104 @@ thomas@192.168.7.154
 
 
 
+hostnamectl hostname labradorite
+
+apt-get install minicom
+
+Set serial Console
+
+/boot/firmware/config.txt
+enable_uart=1
+# Linux serial console
+dtoverlay=uart0-pi5
+# LTE modem
+dtoverlay=uart2
+
+/boot/firmware/cmdline.txt
+console=tty1 console=serial0,115200
+
+https://pinout.xyz/
+
+
+USB-TTL Cable	Raspberry Pi GPIO       NanoBMC
+                Pin 4 (5V)              5V
+Black (GND)   	Pin 6 (GND)             GND
+Yellow (RX)	    Pin 8 (GPIO14 / TX)     GPIO0
+Orange (TX) 	Pin 10 (GPIO15 / RX)    GPIO1
+                Pin                     GPIO4
+
+
+
+UART4 Signal	GPIO	Physical Pin
+TXD4	GPIO8	Pin 24
+RXD4	GPIO9	Pin 21
+
+
+GND     20    Black   GND - Ground (this is pin 1 on the SP/CE connector, nearest the SIM card holder)
+GPIO17  11    Brown   PWRKEY - Power key pin, needs to be toggled low and then high to power up the module
+GPIO04   7    Purple  RX - UART input to breakout
+GPIO22  15    Blue    RESET - Reset pin, pull high to keep breakout active
+NC      nc    Green   NETLIGHT - Output from LTE module, for blinking a LED when there is a network connection.
+GPIO05  29    Yellow  TX - UART output from the breakout
+3V3      1    Orange  VDDIO - IO voltage input, 3.0 - 3.6V recommended for reliable IO. Low current consumption.
+5V       2    RED     VDD - 3.7V - 6.0V power input to the breakout (scroll down for current consumption info)
+
+
+
+# keep modem out of reset
+pinctrl set 22 op dh
+
+# pulse power key
+pinctrl set 17 op dl
+sleep 1
+pinctrl set 17 op dh
+
+
+
+
+minicom ama2
+
+AT
+OK
+AT+CMEE=2
+OK
+ATI
+Manufacturer: SIMCOM INCORPORATED
+Model: A7683E-LBXS
+Revision: V11.0.01
+IMEI: 862095064633685
+
+OK
+AT+CGMM
+A7683E-LBXS
+
+OK
+AT+CGMR
++CGMR: 22110B06A7683M6A
+
+OK
+AT+GSN
+862095064633685
+
+OK
+
+OK
+AT+CPIN?
++CPIN: READY
+
+OK
+AT+CIMI
+234103006567962
+
+
+apt install modemmanager network-manager lsof ppp
+
+cat >/etc/udev/rules.d/80-ttyama2-modemmanager.rules <<'EOF'
+ACTION=="add|change", SUBSYSTEM=="tty", KERNEL=="ttyAMA2", ENV{ID_MM_CANDIDATE}="1"
+EOF
+
+
+
+/etc/chatscripts/simbase
+/etc/ppp/peers/lte
+
