@@ -1,6 +1,6 @@
 module "s3_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "5.12.0"
+  version = "5.14.1"
 
   bucket                  = "tomsweb2-uwunuithaesa"
   block_public_acls       = false
