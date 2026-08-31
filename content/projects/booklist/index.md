@@ -4,7 +4,7 @@ summary: ""
 authors: ["thomas"]
 tags: ["book", "other"]
 categories: []
-date: 2026-07-11
+date: 2026-08-31
 aliases: [/tomsweb/BookList/]
 ---
 
@@ -12,6 +12,7 @@ Books I've read per year. Title - Author (ISBN) (https://isbnsearch.org/)
 
 2026
 
+- The Hobbit - J.R.R. Tolkien (9780547928227)
 - Mistborn: The Well of Ascension - Brandon Sanderson (9780575097759)
 - A Grief Observed - C.S. Lewis (9780571310883)
 - Mistborn: The Final Empire - Brandon Sanderson (9780765311788)
@@ -183,7 +184,6 @@ Books I've read per year. Title - Author (ISBN) (https://isbnsearch.org/)
 
 Earlier
 
-- The Hobbit - J.R.R. Tolkien (9780547928227)
 - The Fellowship of the Ring (The Lord of the Rings book 1) - J.R.R. Tolkien
   (9780547928210)
 - The Two Towers (The Lord of the Rings book 2) - J.R.R. Tolkien (9780345339713)
