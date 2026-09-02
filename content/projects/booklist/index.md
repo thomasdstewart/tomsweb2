@@ -4,7 +4,7 @@ summary: ""
 authors: ["thomas"]
 tags: ["book", "other"]
 categories: []
-date: 2026-08-31
+date: 2026-09-02
 aliases: [/tomsweb/BookList/]
 ---
 
@@ -12,6 +12,7 @@ Books I've read per year. Title - Author (ISBN) (https://isbnsearch.org/)
 
 2026
 
+- Mistborn: The Hero of Ages - Brandon Sanderson (9780575097766)
 - The Hobbit - J.R.R. Tolkien (9780547928227)
 - Mistborn: The Well of Ascension - Brandon Sanderson (9780575097759)
 - A Grief Observed - C.S. Lewis (9780571310883)
